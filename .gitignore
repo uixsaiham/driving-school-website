@@ -1,0 +1,7 @@
+# Local / system files
+.thumbnail
+.DS_Store
+Thumbs.db
+node_modules/
+.gemini/
+.agents/

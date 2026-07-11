@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&f[]=satoshi@400,500,600,700&display=swap">
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #FFFFFF; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    ::selection { background: #2563EB; color: #fff; }
+    @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes floatY { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    @keyframes floatY2 { 0%, 100% { transform: translateY(0px) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(-3deg); } }
+    @keyframes floatY3 { 0%, 100% { transform: translateY(0px) rotate(3deg); } 50% { transform: translateY(-8px) rotate(3deg); } }
+    @keyframes pulseDot { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.6); opacity: 0; } }
+    @keyframes kenBurns { from { transform: scale(1); } to { transform: scale(1.08); } }
+    @keyframes toastIn { 0% { transform: translateY(-16px); opacity: 0; } 15% { transform: translateY(0); opacity: 1; } 85% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-16px); opacity: 0; } }
+    @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+    @keyframes gradientDrift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    input, select, button { font-family: inherit; }
+    a { color: #2563EB; text-decoration: none; }
+    a:hover { color: #1d4ed8; }
+  </style>
+</helmet>
+
+<div style="background:#FFFFFF; color:#111827; font-family:'General Sans', sans-serif; position:relative;">
+
+  <!-- ============ NAV ============ -->
+  <div style="position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:center; padding:{{ navPad }}px 24px 0;">
+    <div style="width:100%; max-width:1320px; height:{{ navHeight }}px; display:flex; align-items:center; justify-content:space-between; padding:0 12px 0 28px; background:{{ navBg }}; backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(17,24,39,0.06); border-radius:100px; box-shadow:{{ navShadow }}; transition:height 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;">
+      <div style="display:flex; align-items:center; gap:48px;">
+        <div style="font-family:'Clash Display', sans-serif; font-weight:700; font-size:20px; letter-spacing:-0.02em; color:#111827;">DriveHub</div>
+        <div style="display:flex; align-items:center; gap:32px;" data-screen-label="nav-links">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="4">
+            <div style="position:relative;" onMouseEnter="{{ item.onEnter }}" onMouseLeave="{{ closeMegaMenu }}">
+              <div style="font-family:'Satoshi', sans-serif; font-size:14px; font-weight:500; color:#111827; cursor:pointer; padding:8px 0; position:relative;">
+                {{ item.label }}
+                <div style="position:absolute; left:0; bottom:0; height:2px; width:{{ item.underlineWidth }}; background:#2563EB; transition:width 0.25s ease;"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div style="display:flex; align-items:center; gap:6px; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:500; color:#111827; background:#F7F8FA; padding:8px 14px; border-radius:100px; cursor:pointer;">
+          🇩🇪 <span>DE</span>
+        </div>
+        <div style="font-family:'Satoshi', sans-serif; font-size:14px; font-weight:500; color:#111827; cursor:pointer;" style-hover="color:#2563EB;">Login</div>
+        <div style="font-family:'Satoshi', sans-serif; font-size:14px; font-weight:600; color:#fff; background:#2563EB; padding:11px 22px; border-radius:100px; cursor:pointer; transition:transform 0.2s ease, box-shadow 0.2s ease;" style-hover="transform:translateY(-2px); box-shadow:0 8px 20px rgba(37,99,235,0.35);">Register</div>
+      </div>
+    </div>
+
+    <!-- Mega menu -->
+    <sc-if value="{{ megaMenuOpen }}" hint-placeholder-val="{{ false }}">
+      <div onMouseEnter="{{ keepMegaMenuOpen }}" onMouseLeave="{{ closeMegaMenu }}" style="position:absolute; top:{{ navHeight }}px; margin-top:24px; width:680px; background:rgba(255,255,255,0.98); backdrop-filter:blur(20px); border-radius:24px; box-shadow:0 24px 60px rgba(17,24,39,0.14); padding:32px; display:grid; grid-template-columns:1fr 1fr 1.1fr; gap:32px; border:1px solid rgba(17,24,39,0.06);">
+        <div>
+          <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; color:#6b7280; letter-spacing:0.06em; margin-bottom:16px;">BY LICENSE TYPE</div>
+          <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="6">
+            <div style="display:flex; align-items:center; gap:10px; padding:8px 0; cursor:pointer;" style-hover="color:#2563EB;">
+              <span style="font-size:18px;">{{ cat.icon }}</span>
+              <span style="font-family:'General Sans', sans-serif; font-size:14px;">{{ cat.name }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div>
+          <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; color:#6b7280; letter-spacing:0.06em; margin-bottom:16px;">BY CITY</div>
+          <sc-for list="{{ mapCities }}" as="c" hint-placeholder-count="5">
+            <div onClick="{{ selectCityFromMenu }}" data-city="{{ c.name }}" style="display:flex; align-items:center; gap:10px; padding:8px 0; cursor:pointer;" style-hover="color:#2563EB;">
+              <span>📍</span><span style="font-family:'General Sans', sans-serif; font-size:14px;">{{ c.name }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:linear-gradient(135deg, rgba(37,99,235,0.08), rgba(16,185,129,0.08)); border-radius:16px; padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div style="font-family:'Clash Display', sans-serif; font-size:17px; font-weight:600; line-height:1.3;">Compare 500+ certified schools across Germany</div>
+          <div style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; color:#2563EB; margin-top:12px;">Explore now →</div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <div data-screen-label="Hero" style="position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:center; background:#0f172a; z-index:1;">
+    <div style="position:absolute; inset:0; overflow:hidden;">
+      <img ref="{{ setHeroImgRef }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; animation:kenBurns 18s ease-in-out infinite alternate; opacity:0.9;" alt=""/>
+      <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(6,10,20,0.96) 0%, rgba(6,10,20,0.82) 38%, rgba(6,10,20,0.4) 65%, rgba(6,10,20,0.12) 82%);"></div>
+      <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(6,10,20,0.35) 0%, rgba(6,10,20,0.1) 22%, rgba(6,10,20,0.15) 55%, rgba(255,255,255,0.97) 92%);"></div>
+    </div>
+
+    <div style="position:relative; z-index:2; max-width:1320px; margin:0 auto; width:100%; padding:220px 24px 0;">
+      <div style="max-width:820px;">
+        <div style="display:inline-flex; align-items:center; gap:8px; font-family:'Satoshi', sans-serif; font-size:12px; font-weight:700; letter-spacing:0.1em; color:#fff; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); backdrop-filter:blur(8px); padding:8px 16px 8px 12px; border-radius:100px; margin-bottom:32px;">
+          <span style="width:7px; height:7px; border-radius:50%; background:#10B981; display:inline-block; box-shadow:0 0 0 3px rgba(16,185,129,0.25);"></span>
+          GERMANY'S #1 DRIVING SCHOOL PLATFORM
+        </div>
+        <div style="font-family:'Clash Display', sans-serif; font-weight:700; font-size:120px; line-height:0.92; letter-spacing:-0.03em; color:#fff; text-align:left;">
+          Learn to drive<br/>your <span style="color:#60a5fa;">way.</span>
+        </div>
+        <div style="font-family:'General Sans', sans-serif; font-size:22px; font-weight:400; color:rgba(255,255,255,0.8); max-width:520px; margin-top:32px; line-height:1.55; text-align:left;">
+          Compare certified instructors, book lessons, and get your license — all in one place.
+        </div>
+        <div style="display:flex; align-items:center; gap:40px; margin-top:48px;">
+          <div>
+            <div style="font-family:'Clash Display', sans-serif; font-size:32px; font-weight:700; color:#fff; line-height:1;">4.8 <span style="color:#F97316;">★</span></div>
+            <div style="font-family:'Satoshi', sans-serif; font-size:13px; color:rgba(255,255,255,0.65); margin-top:6px;">Average Rating</div>
+          </div>
+          <div style="width:1px; height:40px; background:rgba(255,255,255,0.2);"></div>
+          <div>
+            <div style="font-family:'Clash Display', sans-serif; font-size:32px; font-weight:700; color:#fff; line-height:1;">12,000+</div>
+            <div style="font-family:'Satoshi', sans-serif; font-size:13px; color:rgba(255,255,255,0.65); margin-top:6px;">Students Passed</div>
+          </div>
+          <div style="width:1px; height:40px; background:rgba(255,255,255,0.2);"></div>
+          <div>
+            <div style="font-family:'Clash Display', sans-serif; font-size:32px; font-weight:700; color:#fff; line-height:1;">500+</div>
+            <div style="font-family:'Satoshi', sans-serif; font-size:13px; color:rgba(255,255,255,0.65); margin-top:6px;">Partner Schools</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- search widget -->
+    <div style="position:relative; z-index:3; max-width:1180px; width:calc(100% - 48px); margin:64px auto -60px; background:rgba(255,255,255,0.92); backdrop-filter:blur(20px); border-radius:32px; box-shadow:0 32px 80px rgba(17,24,39,0.18); padding:28px 32px; display:grid; grid-template-columns:1.3fr 1fr 1fr 1.1fr 0.9fr auto; gap:0; align-items:center;">
+
+      <div onClick="{{ stopProp }}" style="position:relative; padding-right:20px; border-right:1px solid rgba(17,24,39,0.08);">
+        <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#6b7280; margin-bottom:4px;">CITY</div>
+        <input value="{{ searchCity }}" onChange="{{ onCityChange }}" onFocus="{{ openCitySuggest }}" placeholder="e.g. Berlin" style="border:none; outline:none; font-family:'General Sans', sans-serif; font-size:15px; font-weight:500; width:100%; background:transparent; color:#111827;"/>
+        <div style="position:absolute; top:60px; left:0; width:220px; background:#fff; border-radius:16px; box-shadow:0 16px 40px rgba(17,24,39,0.14); padding:8px; z-index:20; opacity:{{ cityDropdownStyle.opacity }}; transform:{{ cityDropdownStyle.transform }}; pointer-events:{{ cityDropdownStyle.pointerEvents }}; transition:opacity 0.22s ease, transform 0.22s ease;">
+          <sc-for list="{{ citySuggestions }}" as="c" hint-placeholder-count="4">
+            <div onClick="{{ pickCity }}" data-city="{{ c.name }}" style="padding:10px 12px; border-radius:10px; cursor:pointer; display:flex; justify-content:space-between; font-family:'General Sans', sans-serif; font-size:14px;" style-hover="background:#F7F8FA;">
+              <span>📍 {{ c.name }}</span>
+              <span style="color:#9ca3af; font-size:12px;">{{ c.count }} schools</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="position:relative; padding:0 20px; border-right:1px solid rgba(17,24,39,0.08); cursor:pointer;" onClick="{{ toggleLicenseDropdown }}">
+        <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#6b7280; margin-bottom:4px;">LICENSE</div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-family:'General Sans', sans-serif; font-size:15px; font-weight:500; color:#111827;">{{ selectedLicenseIcon }} {{ searchLicense }}</span>
+          <span style="color:#9ca3af; font-size:11px; transform:{{ licenseChevron }}; transition:transform 0.25s ease;">▾</span>
+        </div>
+        <div style="position:absolute; top:60px; left:0; width:190px; background:#fff; border-radius:16px; box-shadow:0 16px 40px rgba(17,24,39,0.14); padding:8px; z-index:20; opacity:{{ licenseDropdownStyle.opacity }}; transform:{{ licenseDropdownStyle.transform }}; pointer-events:{{ licenseDropdownStyle.pointerEvents }}; transition:opacity 0.22s ease, transform 0.22s ease;">
+          <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="6">
+            <div onClick="{{ pickLicense }}" data-name="{{ cat.name }}" style="padding:9px 12px; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:8px; font-family:'General Sans', sans-serif; font-size:14px;" style-hover="background:#F7F8FA;">
+              <span>{{ cat.icon }}</span><span>{{ cat.name }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="padding:0 20px; border-right:1px solid rgba(17,24,39,0.08);">
+        <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#6b7280; margin-bottom:8px;">TRANSMISSION</div>
+        <div style="display:flex; background:#F7F8FA; border-radius:100px; padding:3px;">
+          <div onClick="{{ setTransmissionManual }}" style="flex:1; text-align:center; padding:6px 0; border-radius:100px; font-family:'Satoshi', sans-serif; font-size:12.5px; font-weight:600; cursor:pointer; transition:all 0.2s ease; background:{{ manualBg }}; color:{{ manualColor }};">Manual</div>
+          <div onClick="{{ setTransmissionAuto }}" style="flex:1; text-align:center; padding:6px 0; border-radius:100px; font-family:'Satoshi', sans-serif; font-size:12.5px; font-weight:600; cursor:pointer; transition:all 0.2s ease; background:{{ autoBg }}; color:{{ autoColor }};">Automatic</div>
+        </div>
+      </div>
+
+      <div style="position:relative; padding:0 20px; border-right:1px solid rgba(17,24,39,0.08); cursor:pointer;" onClick="{{ toggleLanguageDropdown }}">
+        <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#6b7280; margin-bottom:4px;">LANGUAGE</div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-family:'General Sans', sans-serif; font-size:15px; font-weight:500; color:#111827;">{{ searchLanguage }}</span>
+          <span style="color:#9ca3af; font-size:11px; transform:{{ languageChevron }}; transition:transform 0.25s ease;">▾</span>
+        </div>
+        <div style="position:absolute; top:60px; left:0; width:170px; background:#fff; border-radius:16px; box-shadow:0 16px 40px rgba(17,24,39,0.14); padding:8px; z-index:20; opacity:{{ languageDropdownStyle.opacity }}; transform:{{ languageDropdownStyle.transform }}; pointer-events:{{ languageDropdownStyle.pointerEvents }}; transition:opacity 0.22s ease, transform 0.22s ease;">
+          <div onClick="{{ pickLanguage }}" data-lang="Any" style="padding:9px 12px; border-radius:10px; cursor:pointer; font-family:'General Sans', sans-serif; font-size:14px;" style-hover="background:#F7F8FA;">Any language</div>
+          <sc-for list="{{ languageOptions }}" as="lang" hint-placeholder-count="5">
+            <div onClick="{{ pickLanguage }}" data-lang="{{ lang }}" style="padding:9px 12px; border-radius:10px; cursor:pointer; font-family:'General Sans', sans-serif; font-size:14px;" style-hover="background:#F7F8FA;">{{ lang }}</div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="padding:0 20px;">
+        <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#6b7280; margin-bottom:4px;">DATE</div>
+        <input type="date" value="{{ searchDate }}" onChange="{{ onDateChange }}" style="border:none; outline:none; font-family:'General Sans', sans-serif; font-size:14px; font-weight:500; width:100%; background:transparent; color:#111827; cursor:pointer;"/>
+      </div>
+
+      <div onClick="{{ runSearch }}" style="margin-left:16px; width:56px; height:56px; border-radius:16px; background:#2563EB; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:transform 0.2s ease, box-shadow 0.2s ease; flex-shrink:0;" style-hover="transform:translateY(-2px); box-shadow:0 12px 24px rgba(37,99,235,0.4);">
+        <span style="color:#fff; font-size:20px;">→</span>
+      </div>
+    </div>
+
+    <div style="position:absolute; bottom:24px; left:50%; transform:translateX(-50%); z-index:2; display:flex; flex-direction:column; align-items:center; gap:8px; opacity:{{ scrollIndicatorOpacity }}; transition:opacity 0.3s ease;">
+      <div style="width:1px; height:36px; background:rgba(255,255,255,0.6);"></div>
+      <div style="font-family:'Satoshi', sans-serif; font-size:11px; letter-spacing:0.1em; color:rgba(255,255,255,0.6);">SCROLL</div>
+    </div>
+  </div>
+
+  <!-- ============ SMART SEARCH RESULTS ============ -->
+  <div id="search-results" data-screen-label="Search Results" style="background:#F7F8FA; padding:140px 24px 100px;">
+    <div style="max-width:1320px; margin:0 auto 48px;">
+      <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; letter-spacing:0.08em; color:#2563EB; margin-bottom:12px;">SMART SEARCH</div>
+      <div style="font-family:'Clash Display', sans-serif; font-size:40px; font-weight:600; letter-spacing:-0.01em;">Find your instructor</div>
+    </div>
+    <div style="max-width:1320px; margin:0 auto; display:grid; grid-template-columns:300px 1fr; gap:40px; align-items:start;">
+
+      <div style="position:sticky; top:104px; background:#fff; border-radius:24px; padding:24px; box-shadow:0 2px 8px rgba(17,24,39,0.04);">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+          <div style="font-family:'Clash Display', sans-serif; font-size:18px; font-weight:600;">Filters</div>
+          <sc-if value="{{ activeFilterBadge }}" hint-placeholder-val="{{ '' }}">
+            <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#2563EB; background:rgba(37,99,235,0.08); padding:4px 10px; border-radius:100px;">{{ activeFilterBadge }}</div>
+          </sc-if>
+        </div>
+
+        <div style="margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid rgba(17,24,39,0.06);">
+          <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; color:#6b7280; letter-spacing:0.04em; margin-bottom:10px;">LICENSE TYPE</div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="6">
+              <div onClick="{{ toggleFilterLicense }}" data-name="{{ cat.name }}" style="padding:7px 12px; border-radius:100px; font-family:'Satoshi', sans-serif; font-size:12.5px; font-weight:500; cursor:pointer; transition:all 0.2s ease; background:{{ cat.filterBg }}; color:{{ cat.filterColor }}; border:1px solid {{ cat.filterBorder }};">{{ cat.icon }} {{ cat.name }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid rgba(17,24,39,0.06);">
+          <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; color:#6b7280; letter-spacing:0.04em; margin-bottom:10px;">TRANSMISSION</div>
+          <div style="display:flex; background:#F7F8FA; border-radius:100px; padding:3px;">
+            <div onClick="{{ setTransmissionManual }}" style="flex:1; text-align:center; padding:8px 0; border-radius:100px; font-family:'Satoshi', sans-serif; font-size:12.5px; font-weight:600; cursor:pointer; transition:all 0.2s ease; background:{{ manualBg }}; color:{{ manualColor }};">Manual</div>
+            <div onClick="{{ setTransmissionAuto }}" style="flex:1; text-align:center; padding:8px 0; border-radius:100px; font-family:'Satoshi', sans-serif; font-size:12.5px; font-weight:600; cursor:pointer; transition:all 0.2s ease; background:{{ autoBg }}; color:{{ autoColor }};">Automatic</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid rgba(17,24,39,0.06);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; color:#6b7280; letter-spacing:0.04em;">MAX PRICE</div>
+            <div style="font-family:'Satoshi', sans-serif; font-size:12.5px; font-weight:600; color:#111827;">€{{ maxPrice }}/lesson</div>
+          </div>
+          <input type="range" min="30" max="50" step="1" value="{{ maxPrice }}" onChange="{{ setMaxPrice }}" style="width:100%; accent-color:#2563EB; cursor:pointer;"/>
+        </div>
+
+        <div style="margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid rgba(17,24,39,0.06);">
+          <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; color:#6b7280; letter-spacing:0.04em; margin-bottom:10px;">MIN RATING</div>
+          <div style="display:flex; gap:6px;">
+            <sc-for list="{{ ratingOptions }}" as="r" hint-placeholder-count="3">
+              <div onClick="{{ setMinRating }}" data-r="{{ r.val }}" style="padding:7px 12px; border-radius:100px; font-family:'Satoshi', sans-serif; font-size:12.5px; font-weight:600; cursor:pointer; transition:all 0.2s ease; background:{{ r.bg }}; color:{{ r.color }};">{{ r.label }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="margin-bottom:8px;">
+          <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; color:#6b7280; letter-spacing:0.04em; margin-bottom:10px;">AVAILABILITY</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <sc-for list="{{ availabilityOptions }}" as="a" hint-placeholder-count="3">
+              <div onClick="{{ setAvailability }}" data-av="{{ a.val }}" style="padding:9px 12px; border-radius:12px; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all 0.2s ease; background:{{ a.bg }}; color:{{ a.color }};">{{ a.label }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div onClick="{{ resetFilters }}" style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; color:#2563EB; cursor:pointer; margin-top:16px; text-align:center;">Reset all filters</div>
+      </div>
+
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+          <div style="font-family:'General Sans', sans-serif; font-size:15px; color:#374151;"><span style="font-weight:600; color:#111827;">{{ filteredCount }}</span> schools found{{ citySuffix }}</div>
+          <div style="position:relative;" onClick="{{ toggleSortDropdown }}">
+            <div style="display:flex; align-items:center; gap:8px; border:1px solid rgba(17,24,39,0.1); border-radius:100px; padding:9px 16px; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:500; background:#fff; cursor:pointer;">
+              <span>{{ sortLabel }}</span>
+              <span style="color:#6b7280; font-size:11px; transform:{{ sortChevron }}; transition:transform 0.25s ease;">▾</span>
+            </div>
+            <div style="position:absolute; top:44px; right:0; width:190px; background:#fff; border-radius:16px; box-shadow:0 16px 40px rgba(17,24,39,0.14); padding:8px; z-index:20; opacity:{{ sortDropdownStyle.opacity }}; transform:{{ sortDropdownStyle.transform }}; pointer-events:{{ sortDropdownStyle.pointerEvents }}; transition:opacity 0.22s ease, transform 0.22s ease;">
+              <sc-for list="{{ sortOptions }}" as="opt" hint-placeholder-count="3">
+                <div onClick="{{ pickSort }}" data-sort="{{ opt.val }}" style="padding:9px 12px; border-radius:10px; cursor:pointer; font-family:'General Sans', sans-serif; font-size:14px;" style-hover="background:#F7F8FA;">{{ opt.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:28px;">
+            <sc-for list="{{ filteredSchools }}" as="school" hint-placeholder-count="6">
+              <dc-import name="SchoolCard" school="{{ school }}" is-fav="{{ school.isFav }}" is-compared="{{ school.isCompared }}" on-toggle-fav="{{ toggleFav }}" on-toggle-compare="{{ toggleCompare }}" hint-size="100%,540px"></dc-import>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff; border-radius:24px; padding:64px 32px; text-align:center;">
+            <div style="font-size:32px; margin-bottom:16px;">🔍</div>
+            <div style="font-family:'Clash Display', sans-serif; font-size:20px; font-weight:600; margin-bottom:8px;">No schools match those filters</div>
+            <div style="font-family:'General Sans', sans-serif; font-size:14px; color:#6b7280; margin-bottom:20px;">Try widening your price range or clearing a filter.</div>
+            <div onClick="{{ resetFilters }}" style="display:inline-block; background:#2563EB; color:#fff; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; padding:11px 22px; border-radius:100px; cursor:pointer;">Reset filters</div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+  <!-- compare tray -->
+  <sc-if value="{{ compareTrayVisible }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:900; background:#111827; border-radius:100px; padding:12px 12px 12px 24px; display:flex; align-items:center; gap:16px; box-shadow:0 24px 60px rgba(17,24,39,0.3);">
+      <div style="font-family:'Satoshi', sans-serif; font-size:13px; color:#fff;">{{ compareList.length }} schools selected</div>
+      <div style="display:flex; gap:-8px;">
+        <sc-for list="{{ compareList }}" as="s" hint-placeholder-count="3">
+          <img ref="{{ s.setImgRef }}" style="width:32px; height:32px; border-radius:50%; border:2px solid #111827; margin-left:-8px; object-fit:cover;"/>
+        </sc-for>
+      </div>
+      <div onClick="{{ openCompareModal }}" style="background:#2563EB; color:#fff; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; padding:12px 22px; border-radius:100px; cursor:pointer;">Compare Now</div>
+    </div>
+  </sc-if>
+
+  <!-- compare modal -->
+  <sc-if value="{{ compareModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:2000; background:rgba(17,24,39,0.5); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:40px;" onClick="{{ closeCompareModal }}">
+      <div onClick="{{ stopProp }}" style="background:#fff; border-radius:32px; max-width:900px; width:100%; max-height:80vh; overflow:auto; padding:40px; box-shadow:0 32px 80px rgba(17,24,39,0.2);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+          <div style="font-family:'Clash Display', sans-serif; font-size:26px; font-weight:600;">Compare Schools</div>
+          <div onClick="{{ closeCompareModal }}" style="width:36px; height:36px; border-radius:50%; background:#F7F8FA; display:flex; align-items:center; justify-content:center; cursor:pointer;">✕</div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat({{ compareList.length }}, 1fr); gap:20px;">
+          <sc-for list="{{ compareList }}" as="s" hint-placeholder-count="3">
+            <div style="border:1px solid rgba(17,24,39,0.08); border-radius:20px; padding:20px;">
+              <img ref="{{ s.setImgRef }}" style="width:100%; height:120px; object-fit:cover; border-radius:12px; margin-bottom:12px;"/>
+              <div style="font-family:'Clash Display', sans-serif; font-size:17px; font-weight:600; margin-bottom:8px;">{{ s.name }}</div>
+              <div style="font-family:'General Sans', sans-serif; font-size:13px; color:#6b7280; margin-bottom:4px;">📍 {{ s.city }}</div>
+              <div style="font-family:'General Sans', sans-serif; font-size:13px; color:#6b7280; margin-bottom:4px;">⭐ {{ s.rating }} ({{ s.reviews }} reviews)</div>
+              <div style="font-family:'General Sans', sans-serif; font-size:13px; color:#6b7280; margin-bottom:4px;">from €{{ s.price }}/lesson</div>
+              <div style="font-family:'General Sans', sans-serif; font-size:13px; color:#6b7280;">{{ s.transmission }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ TRUST & STATS ============ -->
+  <sc-if value="{{ showTrustBand }}" hint-placeholder-val="{{ true }}">
+  <div data-screen-label="Stats" data-reveal="stats" ref="{{ setRef }}" style="background:#111827; padding:120px 24px;">
+    <div style="max-width:1320px; margin:0 auto;">
+      <div style="text-align:center; font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; letter-spacing:0.08em; color:#60a5fa; margin-bottom:48px;">TRUSTED ACROSS GERMANY</div>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
+        <sc-for list="{{ statBlocks }}" as="s" hint-placeholder-count="4">
+          <div style="text-align:center; border-left:1px solid rgba(255,255,255,0.1); padding-left:24px;">
+            <div style="font-family:'Clash Display', sans-serif; font-weight:700; font-size:64px; color:#fff;">{{ s.display }}</div>
+            <div style="font-family:'General Sans', sans-serif; font-size:15px; color:rgba(255,255,255,0.55); margin-top:8px;">{{ s.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:80px; overflow:hidden; -webkit-mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);">
+        <div style="display:flex; gap:64px; width:max-content; animation:marqueeScroll 30s linear infinite;">
+          <sc-for list="{{ partnerLogosDoubled }}" as="p" hint-placeholder-count="16">
+            <div style="font-family:'Clash Display', sans-serif; font-size:22px; font-weight:600; color:rgba(255,255,255,0.35); white-space:nowrap;">{{ p }}</div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ LICENSE CATEGORIES ============ -->
+  <div data-screen-label="Categories" style="background:#F7F8FA; padding:120px 24px;">
+    <div style="max-width:1320px; margin:0 auto;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px; flex-wrap:wrap; gap:16px;">
+        <div style="font-family:'Clash Display', sans-serif; font-size:48px; font-weight:600; letter-spacing:-0.01em;">Every path<br/>to the wheel</div>
+        <div style="font-family:'General Sans', sans-serif; font-size:16px; color:#6b7280; max-width:340px;">From your first car to a full trailer rig — find certified instructors for every license class.</div>
+      </div>
+      <div style="display:flex; gap:16px; height:400px;">
+        <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="6">
+          <div onMouseEnter="{{ expandCategory }}" onMouseLeave="{{ collapseCategory }}" data-idx="{{ cat.idx }}" style="position:relative; flex:{{ cat.flexBasis }}; border-radius:28px; overflow:hidden; cursor:pointer; transition:flex 0.45s cubic-bezier(0.16,1,0.3,1); flex-shrink:0;">
+            <img ref="{{ cat.setImgRef }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale({{ cat.imgScale }}); transition:transform 0.45s ease;" alt=""/>
+            <div style="position:absolute; inset:0; background:linear-gradient(0deg, rgba(17,24,39,0.85) 0%, rgba(17,24,39,0.1) 55%, rgba(17,24,39,0.25) 100%);"></div>
+            <sc-if value="{{ cat.isNew }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; top:20px; right:20px; background:#10B981; color:#fff; font-family:'Satoshi', sans-serif; font-size:11px; font-weight:700; padding:5px 12px; border-radius:100px;">NEW</div>
+            </sc-if>
+            <div style="position:absolute; top:20px; left:20px; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.2); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; font-size:20px;">{{ cat.icon }}</div>
+            <div style="position:absolute; bottom:0; left:0; right:0; padding:24px; color:#fff;">
+              <div style="font-family:'Clash Display', sans-serif; font-size:22px; font-weight:600; writing-mode:{{ cat.writingMode }}; white-space:nowrap;">{{ cat.name }}</div>
+              <sc-if value="{{ cat.expanded }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:10px; opacity:1; transition:opacity 0.3s ease;">
+                  <div style="font-family:'General Sans', sans-serif; font-size:13px; color:rgba(255,255,255,0.8); margin-bottom:10px;">{{ cat.desc }}</div>
+                  <div style="font-family:'Satoshi', sans-serif; font-size:12px; color:rgba(255,255,255,0.7); margin-bottom:10px;">from €{{ cat.cost }} · {{ cat.duration }}</div>
+                  <div style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; color:#fff;">Explore Schools →</div>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ WHY CHOOSE (sticky storytelling) ============ -->
+  <div data-screen-label="Why Choose" style="background:#fff; padding:120px 24px;">
+    <div style="max-width:1320px; margin:0 auto 64px;">
+      <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; letter-spacing:0.08em; color:#2563EB; margin-bottom:16px;">WHY CHOOSE DRIVEHUB</div>
+      <div style="font-family:'Clash Display', sans-serif; font-size:48px; font-weight:600; letter-spacing:-0.01em; max-width:640px;">Built around how you actually learn to drive</div>
+    </div>
+    <div style="max-width:1320px; margin:0 auto; display:grid; grid-template-columns:520px 1fr; gap:80px;">
+      <div style="position:sticky; top:120px; height:560px; border-radius:32px; overflow:hidden; background:linear-gradient(135deg, rgba(37,99,235,0.06), rgba(16,185,129,0.06)); box-shadow:0 24px 60px rgba(17,24,39,0.08);">
+        <sc-for list="{{ whyFeatures }}" as="f" hint-placeholder-count="4">
+          <img ref="{{ f.setImgRef }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:{{ f.opacity }}; transform:scale({{ f.imgScale }}); transition:opacity 0.35s ease, transform 0.9s cubic-bezier(0.16,1,0.3,1);" alt=""/>
+        </sc-for>
+        <div style="position:absolute; inset:0; background:linear-gradient(0deg, rgba(17,24,39,0.75) 0%, rgba(17,24,39,0.05) 45%, rgba(17,24,39,0.15) 100%);"></div>
+
+        <div style="position:absolute; right:28px; top:28px; width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.18); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; font-size:26px; z-index:2;">{{ whyActiveIcon }}</div>
+
+        <div style="position:absolute; left:28px; top:28px; display:flex; flex-direction:column; gap:10px; z-index:2;">
+          <sc-for list="{{ whyFeatures }}" as="f" hint-placeholder-count="4">
+            <div onClick="{{ scrollToFeature }}" data-feature-idx="{{ f.idx }}" style="width:8px; height:{{ f.dotHeight }}; border-radius:4px; background:{{ f.dotColor }}; transition:all 0.4s cubic-bezier(0.16,1,0.3,1); cursor:pointer;"></div>
+          </sc-for>
+        </div>
+
+        <div style="position:absolute; bottom:0; left:0; right:0; padding:32px; z-index:2;">
+          <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; color:rgba(255,255,255,0.6); letter-spacing:0.06em; margin-bottom:8px;">STEP {{ whyActiveNumber }} OF 4</div>
+          <div style="font-family:'Clash Display', sans-serif; font-size:28px; font-weight:600; color:#fff;">{{ whyActiveTitle }}</div>
+        </div>
+      </div>
+      <div>
+        <sc-for list="{{ whyFeatures }}" as="f" hint-placeholder-count="4">
+          <div data-reveal="{{ f.revealId }}" data-feature-idx="{{ f.idx }}" ref="{{ setFeatureRef }}" style="min-height:78vh; display:flex; flex-direction:column; justify-content:center; position:relative; padding-bottom:40px; opacity:{{ f.textOpacity }}; transform:{{ f.textTransform }}; transition:opacity 0.6s ease, transform 0.6s ease;">
+            <div style="font-family:'Clash Display', sans-serif; font-size:120px; font-weight:700; color:rgba(17,24,39,0.06); position:absolute; top:0; left:-8px;">{{ f.number }}</div>
+            <div style="position:relative;">
+              <div style="font-family:'Clash Display', sans-serif; font-size:36px; font-weight:600; margin-bottom:16px; color:{{ f.accentColor }};">{{ f.title }}</div>
+              <div style="font-family:'General Sans', sans-serif; font-size:17px; color:#4b5563; max-width:460px; line-height:1.6; margin-bottom:20px;">{{ f.desc }}</div>
+              <sc-for list="{{ f.bullets }}" as="b" hint-placeholder-count="3">
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px; font-family:'General Sans', sans-serif; font-size:15px; color:#111827;">
+                  <span style="color:{{ f.accentColor }};">✓</span>{{ b }}
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ LEARNING JOURNEY ============ -->
+  <div data-screen-label="Learning Journey" style="background:#F7F8FA; padding:120px 0;">
+    <div style="max-width:1320px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; align-items:center; margin-bottom:48px;">
+      <div style="font-family:'Clash Display', sans-serif; font-size:48px; font-weight:600;">Your learning journey</div>
+      <div style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; color:#6b7280; background:#fff; padding:10px 18px; border-radius:100px;">Step {{ activeStep }} / 6</div>
+    </div>
+    <div style="height:2px; background:rgba(17,24,39,0.08); max-width:1320px; margin:0 auto 40px; position:relative; border-radius:2px;">
+      <div style="height:2px; width:{{ journeyProgress }}%; background:#2563EB; border-radius:2px; transition:width 0.15s linear;"></div>
+    </div>
+    <div onScroll="{{ onJourneyScroll }}" ref="{{ setJourneyRef }}" style="display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; padding:0 24px 20px; max-width:100vw;">
+      <sc-for list="{{ journeySteps }}" as="step" hint-placeholder-count="6">
+        <div style="scroll-snap-align:center; flex:0 0 340px; background:#fff; border-radius:24px; padding:28px; box-shadow:0 4px 16px rgba(17,24,39,0.06); border:{{ step.borderStyle }};">
+          <div style="width:40px; height:40px; border-radius:50%; background:#2563EB; color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Clash Display', sans-serif; font-weight:600; font-size:16px; margin-bottom:20px;">{{ step.num }}</div>
+          <div style="font-size:28px; margin-bottom:10px;">{{ step.icon }}</div>
+          <div style="font-family:'Clash Display', sans-serif; font-size:21px; font-weight:600; margin-bottom:8px;">{{ step.title }}</div>
+          <div style="font-family:'General Sans', sans-serif; font-size:14px; color:#6b7280; line-height:1.5;">{{ step.desc }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ============ INSTRUCTORS ============ -->
+  <div data-screen-label="Instructors" style="background:#fff; padding:120px 24px;">
+    <div style="max-width:1320px; margin:0 auto;">
+      <div style="font-family:'Clash Display', sans-serif; font-size:48px; font-weight:600; margin-bottom:16px;">Instructors who actually care</div>
+      <div style="display:flex; gap:10px; margin-bottom:48px; flex-wrap:wrap;">
+        <sc-for list="{{ instructorChips }}" as="chip" hint-placeholder-count="4">
+          <div style="padding:8px 16px; border-radius:100px; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:500; background:#F7F8FA; color:#374151; cursor:pointer; white-space:nowrap;">{{ chip }}</div>
+        </sc-for>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:28px;">
+        <sc-for list="{{ instructors }}" as="ins" hint-placeholder-count="6">
+          <div style="position:relative;">
+            <div onClick="{{ openInstructorVideo }}" data-id="{{ ins.id }}" style="position:relative; border-radius:24px; overflow:hidden; height:320px; cursor:pointer;">
+              <img ref="{{ ins.setImgRef }}" style="width:100%; height:100%; object-fit:cover;" alt=""/>
+              <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+                <div style="width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.25); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;">▶</div>
+              </div>
+              <div style="position:absolute; top:16px; right:16px; display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.85); padding:5px 10px; border-radius:100px;">
+                <span style="width:7px; height:7px; border-radius:50%; background:{{ ins.availColor }};"></span>
+                <span style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600;">{{ ins.availLabel }}</span>
+              </div>
+            </div>
+            <div style="padding-top:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-family:'Clash Display', sans-serif; font-size:19px; font-weight:600;">{{ ins.name }}</div>
+                <div style="font-family:'Satoshi', sans-serif; font-size:13px; color:#6b7280;">{{ ins.years }}y exp</div>
+              </div>
+              <div style="font-family:'General Sans', sans-serif; font-size:13px; color:#6b7280; margin:6px 0 14px;">{{ ins.languages }} · ⭐ {{ ins.rating }}</div>
+              <div style="text-align:center; border:1px solid rgba(17,24,39,0.12); border-radius:100px; padding:11px; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s ease;" style-hover="background:#111827; color:#fff; border-color:#111827;">View Profile</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- instructor video modal -->
+  <sc-if value="{{ instructorVideoOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeInstructorVideo }}" style="position:fixed; inset:0; z-index:2000; background:rgba(17,24,39,0.7); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:40px;">
+      <div onClick="{{ stopProp }}" style="position:relative; width:100%; max-width:720px; aspect-ratio:16/9; border-radius:24px; overflow:hidden; background:#111827;">
+        <img ref="{{ setActiveInstructorImgRef }}" style="width:100%; height:100%; object-fit:cover; opacity:0.6;" alt=""/>
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-family:'General Sans', sans-serif; font-size:15px;">Video intro placeholder — {{ activeInstructorName }}</div>
+        <div onClick="{{ closeInstructorVideo }}" style="position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.2); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;">✕</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ SUCCESS STORIES ============ -->
+  <div data-screen-label="Success Stories" style="background:#fff; padding:120px 24px; position:relative; overflow:hidden;">
+    <div style="position:absolute; top:40px; left:50%; transform:translateX(-50%); font-family:'Clash Display', sans-serif; font-size:280px; font-weight:700; color:rgba(17,24,39,0.03); z-index:0;">"</div>
+    <div style="max-width:1320px; margin:0 auto; position:relative; z-index:1;">
+      <div style="font-family:'Clash Display', sans-serif; font-size:48px; font-weight:600; margin-bottom:48px; text-align:center;">Student success stories</div>
+      <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:40px; margin-bottom:64px;">
+        <div style="position:relative; border-radius:32px; overflow:hidden; height:440px; cursor:pointer; transition:transform 0.3s ease;" style-hover="transform:scale(1.015);">
+          <img ref="{{ setFeaturedTestimonialImgRef }}" style="width:100%; height:100%; object-fit:cover;" alt=""/>
+          <div style="position:absolute; inset:0; background:linear-gradient(0deg, rgba(17,24,39,0.6), transparent 40%); display:flex; align-items:flex-end; padding:28px;">
+            <div>
+              <div style="width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.25); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; color:#fff; margin-bottom:16px;">▶</div>
+              <div style="font-family:'Clash Display', sans-serif; font-size:20px; font-weight:600; color:#fff;">Sarah, 24 — Passed in 6 weeks</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <sc-for list="{{ beforeAfter }}" as="ba" hint-placeholder-count="2">
+            <div style="flex:1; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; border-radius:24px; overflow:hidden; border:1px solid rgba(17,24,39,0.08);">
+              <div style="padding:24px; background:#F7F8FA;">
+                <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#9ca3af; margin-bottom:6px;">BEFORE</div>
+                <div style="font-family:'General Sans', sans-serif; font-size:14px; color:#374151;">{{ ba.before }}</div>
+              </div>
+              <div style="color:#10B981; font-size:18px; padding:0 8px;">→</div>
+              <div style="padding:24px; background:rgba(16,185,129,0.06);">
+                <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#10B981; margin-bottom:6px;">AFTER</div>
+                <div style="font-family:'General Sans', sans-serif; font-size:14px; color:#111827;">{{ ba.after }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="overflow:hidden; -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);">
+        <div style="display:flex; gap:20px; width:max-content; animation:marqueeScroll 40s linear infinite;">
+          <sc-for list="{{ reviewsDoubled }}" as="rev" hint-placeholder-count="12">
+            <div style="width:300px; flex-shrink:0; background:#F7F8FA; border-radius:20px; padding:24px;">
+              <div style="color:#F97316; font-size:14px; margin-bottom:10px;">{{ rev.stars }}</div>
+              <div style="font-family:'General Sans', sans-serif; font-size:14px; color:#374151; line-height:1.5; margin-bottom:14px;">"{{ rev.quote }}"</div>
+              <div style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600;">{{ rev.name }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MOBILE APP ============ -->
+  <div data-screen-label="Mobile App" style="background:#F7F8FA; padding:140px 24px; position:relative; overflow:hidden;">
+    <div style="position:absolute; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(37,99,235,0.15), transparent 70%); top:0; right:10%; filter:blur(40px);"></div>
+    <div style="position:absolute; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle, rgba(16,185,129,0.12), transparent 70%); bottom:0; right:30%; filter:blur(40px);"></div>
+    <div style="max-width:1320px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; position:relative; z-index:1;">
+      <div>
+        <div style="font-family:'Clash Display', sans-serif; font-size:44px; font-weight:600; line-height:1.1; margin-bottom:20px;">Your license journey,<br/>in your pocket</div>
+        <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:32px;">
+          <div style="display:flex; align-items:center; gap:12px; font-family:'General Sans', sans-serif; font-size:15px;"><span style="color:#10B981;">✓</span> Book & reschedule lessons instantly</div>
+          <div style="display:flex; align-items:center; gap:12px; font-family:'General Sans', sans-serif; font-size:15px;"><span style="color:#10B981;">✓</span> Track your progress toward your test</div>
+          <div style="display:flex; align-items:center; gap:12px; font-family:'General Sans', sans-serif; font-size:15px;"><span style="color:#10B981;">✓</span> Chat directly with your instructor</div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div style="background:#111827; color:#fff; border-radius:12px; padding:10px 18px; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600;">App Store</div>
+          <div style="background:#111827; color:#fff; border-radius:12px; padding:10px 18px; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600;">Google Play</div>
+          <div style="background:#fff; border-radius:16px; padding:10px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(17,24,39,0.06);">
+            <div style="width:48px; height:48px; background:repeating-linear-gradient(45deg,#111827,#111827 3px,#fff 3px,#fff 6px); border-radius:6px;"></div>
+          </div>
+        </div>
+      </div>
+      <div style="position:relative; height:560px;">
+        <div style="position:absolute; right:60px; top:0; width:220px; height:460px; background:#111827; border-radius:36px; padding:10px; transform:rotate(4deg); animation:floatY3 6s ease-in-out infinite;">
+          <div style="width:100%; height:100%; background:#fff; border-radius:26px; overflow:hidden; position:relative;">
+            <img ref="{{ setAppScreen1Ref }}" style="width:100%; height:100%; object-fit:cover; opacity:0.35;" alt=""/>
+            <div style="position:absolute; top:40px; left:12px; right:12px; background:#fff; border-radius:16px; padding:12px; box-shadow:0 8px 20px rgba(17,24,39,0.15);">
+              <div style="display:flex; align-items:center; gap:8px; font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600;"><span style="color:#10B981;">✓</span> Lesson confirmed</div>
+            </div>
+          </div>
+        </div>
+        <div style="position:absolute; left:20px; top:60px; width:220px; height:460px; background:#111827; border-radius:36px; padding:10px; transform:rotate(-4deg); animation:floatY2 6.5s ease-in-out infinite 0.5s; z-index:2;">
+          <div style="width:100%; height:100%; background:#fff; border-radius:26px; overflow:hidden; position:relative;">
+            <img ref="{{ setAppScreen2Ref }}" style="width:100%; height:100%; object-fit:cover;" alt=""/>
+            <div style="position:absolute; top:100px; left:12px; right:12px; background:#fff; border-radius:16px; padding:12px; box-shadow:0 8px 24px rgba(17,24,39,0.18); animation:toastIn 4s ease-in-out infinite;">
+              <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; margin-bottom:2px;">✓ Lesson tomorrow, 2pm</div>
+              <div style="font-family:'General Sans', sans-serif; font-size:10px; color:#6b7280;">Herr Weber · Mitte, Berlin</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FAQ ============ -->
+  <div data-screen-label="FAQ" style="background:#fff; padding:120px 24px;">
+    <div style="max-width:800px; margin:0 auto;">
+      <div style="font-family:'Clash Display', sans-serif; font-size:44px; font-weight:600; text-align:center; margin-bottom:32px;">Frequently asked questions</div>
+      <div style="position:relative; margin-bottom:20px;">
+        <input value="{{ faqQuery }}" onChange="{{ onFaqQueryChange }}" placeholder="Search questions..." style="width:100%; padding:16px 24px; border-radius:100px; border:1px solid rgba(17,24,39,0.1); background:#F7F8FA; font-family:'General Sans', sans-serif; font-size:15px; outline:none;"/>
+      </div>
+      <div style="display:flex; gap:8px; justify-content:center; margin-bottom:32px;">
+        <sc-for list="{{ faqChips }}" as="chip" hint-placeholder-count="3">
+          <div onClick="{{ selectFaqChip }}" data-chip="{{ chip.name }}" style="padding:8px 16px; border-radius:100px; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:500; cursor:pointer; border:1px solid {{ chip.borderColor }}; color:{{ chip.textColor }};">{{ chip.name }}</div>
+        </sc-for>
+      </div>
+      <div>
+        <sc-for list="{{ filteredFaqs }}" as="faq" hint-placeholder-count="6">
+          <div style="border-bottom:1px solid rgba(17,24,39,0.08); padding:22px 0;">
+            <div onClick="{{ toggleFaq }}" data-id="{{ faq.id }}" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
+              <div style="font-family:'Satoshi', sans-serif; font-size:16px; font-weight:600;">{{ faq.q }}</div>
+              <div style="width:32px; height:32px; border-radius:50%; background:#F7F8FA; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background 0.2s ease;">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="transform:rotate({{ faq.chevronRotate }}); transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);">
+                  <path d="M2.5 5L7 9.5L11.5 5" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <sc-if value="{{ faq.open }}" hint-placeholder-val="{{ false }}">
+              <div style="font-family:'General Sans', sans-serif; font-size:15px; color:#4b5563; line-height:1.6; margin-top:14px; max-width:640px;">{{ faq.a }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FINAL CTA ============ -->
+  <div data-screen-label="Final CTA" style="position:relative; padding:140px 24px; overflow:hidden; background:linear-gradient(120deg, #2563EB, #10B981, #2563EB); background-size:200% 200%; animation:gradientDrift 10s ease infinite;">
+    <div style="max-width:780px; margin:0 auto; text-align:center; position:relative; z-index:1;">
+      <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; letter-spacing:0.08em; color:rgba(255,255,255,0.85); margin-bottom:20px;">START TODAY</div>
+      <div style="font-family:'Clash Display', sans-serif; font-size:72px; font-weight:700; color:#fff; line-height:1; margin-bottom:20px;">Ready to hit the road?</div>
+      <div style="font-family:'General Sans', sans-serif; font-size:18px; color:rgba(255,255,255,0.85); margin-bottom:40px;">Join 12,000+ students who found their instructor through DriveHub.</div>
+      <div style="background:rgba(255,255,255,0.15); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.3); border-radius:100px; padding:8px; display:flex; align-items:center; gap:8px; max-width:520px; margin:0 auto;">
+        <input value="{{ ctaCity }}" onChange="{{ onCtaCityChange }}" placeholder="Your city" style="flex:1; border:none; outline:none; background:transparent; padding:12px 20px; font-family:'General Sans', sans-serif; font-size:15px; color:#fff;"/>
+        <div onClick="{{ ctaSearch }}" style="background:#fff; color:#2563EB; font-family:'Satoshi', sans-serif; font-size:14px; font-weight:600; padding:14px 24px; border-radius:100px; cursor:pointer; white-space:nowrap;">Find My School</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <div data-screen-label="Footer" style="position:relative; background:#111827; padding:100px 24px 40px; overflow:hidden; min-height:100vh; display:flex; flex-direction:column; justify-content:space-between;">
+    <div style="position:absolute; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle, rgba(37,99,235,0.2), transparent 70%); top:-100px; left:-100px; filter:blur(60px); animation:floatY 12s ease-in-out infinite;"></div>
+    <div style="position:absolute; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(16,185,129,0.18), transparent 70%); bottom:-80px; right:0; filter:blur(60px); animation:floatY 14s ease-in-out infinite 2s;"></div>
+    <div style="position:absolute; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle, rgba(249,115,22,0.14), transparent 70%); top:20%; right:20%; filter:blur(60px); animation:floatY 10s ease-in-out infinite 1s;"></div>
+
+    <div style="max-width:1320px; margin:0 auto; width:100%; position:relative; z-index:1;">
+      <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:60px; align-items:start; margin-bottom:80px;">
+        <div>
+          <div style="font-family:'Clash Display', sans-serif; font-size:64px; font-weight:700; color:#fff; line-height:1.05; margin-bottom:32px;">Let's get you<br/>on the road.</div>
+          <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:100px; padding:6px; display:flex; align-items:center; gap:8px; max-width:400px;">
+            <input value="{{ newsletterEmail }}" onChange="{{ onNewsletterChange }}" placeholder="Your email" style="flex:1; border:none; outline:none; background:transparent; padding:10px 18px; font-family:'General Sans', sans-serif; font-size:14px; color:#fff;"/>
+            <div onClick="{{ submitNewsletter }}" style="width:40px; height:40px; border-radius:50%; background:#2563EB; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; flex-shrink:0;">{{ newsletterIcon }}</div>
+          </div>
+          <div style="font-family:'General Sans', sans-serif; font-size:12px; color:rgba(255,255,255,0.4); margin-top:10px;">{{ newsletterMsg }}</div>
+        </div>
+        <div style="position:relative; height:280px; background:rgba(255,255,255,0.03); border-radius:24px; border:1px solid rgba(255,255,255,0.08); overflow:hidden;">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%;">
+            <path d="M 38.5,3.3 L 86.5,5.9 L 91.9,14.9 L 94.6,34.8 L 98.4,50.2 L 81.2,79.1 L 76.9,97.1 L 39.6,96.4 L 18.9,95.8 L 23.2,78.4 L 6.9,75.2 L 2.6,71.4 L 1.4,55.3 L 1.4,52.1 L 9.0,36.7 L 12.3,22.6 L 14.5,17.5 Z" fill="rgba(96,165,250,0.22)" stroke="rgba(147,197,253,0.85)" stroke-width="1.4" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+          </svg>
+          <sc-for list="{{ mapCities }}" as="c" hint-placeholder-count="5">
+            <div onMouseEnter="{{ hoverCity }}" onMouseLeave="{{ unhoverCity }}" data-city="{{ c.name }}" style="position:absolute; left:{{ c.x }}%; top:{{ c.y }}%; cursor:pointer; z-index:2;">
+              <div style="width:8px; height:8px; border-radius:50%; background:#60a5fa; position:relative;">
+                <div style="position:absolute; inset:0; border-radius:50%; background:#60a5fa; animation:pulseDot 2.5s ease-out infinite;"></div>
+              </div>
+              <sc-if value="{{ c.hovered }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute; top:16px; left:50%; transform:translateX(-50%); background:#fff; color:#111827; padding:8px 14px; border-radius:12px; font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; white-space:nowrap; box-shadow:0 8px 20px rgba(0,0,0,0.3);">{{ c.name }} · {{ c.count }} schools</div>
+              </sc-if>
+            </div>
+          </sc-for>
+          <sc-if value="{{ userLocVisible }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; left:{{ userLocX }}%; top:{{ userLocY }}%; z-index:3; pointer-events:none;">
+              <div style="width:12px; height:12px; border-radius:50%; background:#F97316; border:2px solid #fff; position:relative; box-shadow:0 0 0 3px rgba(249,115,22,0.25);">
+                <div style="position:absolute; inset:-6px; border-radius:50%; background:#F97316; opacity:0.5; animation:pulseDot 2s ease-out infinite;"></div>
+              </div>
+              <div style="position:absolute; top:18px; left:50%; transform:translateX(-50%); background:#F97316; color:#fff; padding:6px 12px; border-radius:100px; font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; white-space:nowrap; box-shadow:0 8px 20px rgba(0,0,0,0.3);">📍 You — {{ userLocLabel }}</div>
+            </div>
+          </sc-if>
+          <div style="position:absolute; bottom:12px; right:16px; font-family:'Satoshi', sans-serif; font-size:11px; color:rgba(255,255,255,0.4); z-index:2;">{{ mapCaption }}</div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-bottom:60px; padding-top:40px; border-top:1px solid rgba(255,255,255,0.08);">
+        <sc-for list="{{ footerColumns }}" as="col" hint-placeholder-count="4">
+          <div>
+            <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; color:rgba(255,255,255,0.4); letter-spacing:0.06em; margin-bottom:16px;">{{ col.title }}</div>
+            <sc-for list="{{ col.links }}" as="link" hint-placeholder-count="4">
+              <div style="font-family:'General Sans', sans-serif; font-size:14px; color:rgba(255,255,255,0.65); padding:6px 0; cursor:pointer; transition:all 0.2s ease;" style-hover="color:#fff; transform:translateX(4px);">{{ link }}</div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; padding-top:24px; border-top:1px solid rgba(255,255,255,0.08); flex-wrap:wrap; gap:16px;">
+        <div style="font-family:'Satoshi', sans-serif; font-size:13px; color:rgba(255,255,255,0.4);">© 2026 DriveHub Germany</div>
+        <div style="display:flex; gap:12px;">
+          <sc-for list="{{ socials }}" as="s" hint-placeholder-count="4">
+            <div style="width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.2s ease; font-size:15px;" style-hover="background:#2563EB; transform:translateY(-3px);">{{ s }}</div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- back to top -->
+  <div onClick="{{ scrollToTop }}" style="position:fixed; bottom:32px; right:32px; z-index:900; width:48px; height:48px; border-radius:50%; background:#111827; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; opacity:{{ backToTopOpacity }}; pointer-events:{{ backToTopPointer }}; transition:opacity 0.3s ease, transform 0.2s ease; box-shadow:0 8px 24px rgba(17,24,39,0.25);" style-hover="transform:translateY(-4px);">↑</div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440}, &quot;heroStyle&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;city&quot;, &quot;options&quot;: [&quot;city&quot;, &quot;autobahn&quot;, &quot;countryside&quot;], &quot;tsType&quot;: &quot;'city' | 'autobahn' | 'countryside'&quot;, &quot;section&quot;: &quot;Hero&quot;}, &quot;showTrustBand&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Sections&quot;}, &quot;compareLimit&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 3, &quot;min&quot;: 2, &quot;max&quot;: 4, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Search Results&quot;}}">
+// Coordinates derived from real lat/lon, projected onto Germany's bounding box (lon 5.87-15.04, lat 47.27-55.06)
+const CITIES_DATA = [
+  { name: 'Berlin', count: 84, lat: 52.520, lon: 13.405, x: 82.2, y: 32.6 },
+  { name: 'Munich', count: 61, lat: 48.137, lon: 11.575, x: 62.2, y: 88.9 },
+  { name: 'Hamburg', count: 47, lat: 53.551, lon: 9.993, x: 45.0, y: 19.4 },
+  { name: 'Cologne', count: 53, lat: 50.937, lon: 6.960, x: 11.9, y: 52.9 },
+  { name: 'Frankfurt', count: 39, lat: 50.110, lon: 8.682, x: 30.7, y: 63.5 },
+];
+const GERMANY_BBOX = { lonMin: 5.87, lonMax: 15.04, latMin: 47.27, latMax: 55.06 };
+
+const LANGUAGES = ['German', 'English', 'Turkish', 'Arabic', 'Russian', 'Polish'];
+
+const CATEGORY_DEFS = [
+  { name: 'Car', icon: '🚗', desc: 'Class B — cars & light vehicles', cost: 1890, duration: '3 months', image: 'https://picsum.photos/seed/1449965408869-eaa3f722e40d/600/600', isNew: false },
+  { name: 'Motorcycle', icon: '🏍️', desc: 'Class A — motorcycles, all sizes', cost: 1450, duration: '2 months', image: 'https://picsum.photos/seed/1558980664-10e7170b5df9/600/600', isNew: false },
+  { name: 'Truck', icon: '🚛', desc: 'Class C — trucks & heavy goods', cost: 2600, duration: '4 months', image: 'https://picsum.photos/seed/1601584115197-04ecc0da31d7/600/600', isNew: false },
+  { name: 'Bus', icon: '🚌', desc: 'Class D — passenger buses', cost: 2900, duration: '4 months', image: 'https://picsum.photos/seed/1570125909232-eb263c188f7e/600/600', isNew: false },
+  { name: 'Trailer', icon: '🚚', desc: 'Class BE — cars with trailers', cost: 690, duration: '3 weeks', image: 'https://picsum.photos/seed/1519003722824-194d4455a60c/600/600', isNew: false },
+  { name: 'Electric', icon: '⚡', desc: 'EV-specialized instruction', cost: 1990, duration: '3 months', image: 'https://picsum.photos/seed/1593941707882-a5bba14938c7/600/600', isNew: true },
+];
+
+const SCHOOL_DEFS = [
+  { id: 's1', name: 'Fahrschule Berlin Mitte', city: 'Berlin', rating: 4.9, reviews: 312, price: 38, transmission: 'Manual & Automatic', languages: ['German', 'English'], availability: 'week', licenseTypes: ['Car', 'Motorcycle'], image: 'https://picsum.photos/seed/1503736334956-4c8f8e92946d/600/600' },
+  { id: 's2', name: 'München Fahrschule Nord', city: 'Munich', rating: 4.8, reviews: 201, price: 42, transmission: 'Automatic', languages: ['German', 'English', 'Turkish'], availability: 'month', licenseTypes: ['Car', 'Electric'], image: 'https://picsum.photos/seed/1494905998402-395d579af36f/600/600' },
+  { id: 's3', name: 'Hamburg Drive Academy', city: 'Hamburg', rating: 4.7, reviews: 168, price: 36, transmission: 'Manual', languages: ['German', 'Polish'], availability: 'week', licenseTypes: ['Car', 'Trailer'], image: 'https://picsum.photos/seed/1541899481282-d53bffe3c35d/600/600' },
+  { id: 's4', name: 'Kölner Fahrschule Plus', city: 'Cologne', rating: 4.9, reviews: 275, price: 40, transmission: 'Manual & Automatic', languages: ['German', 'English', 'Arabic'], availability: 'week', licenseTypes: ['Car', 'Truck', 'Bus'], image: 'https://picsum.photos/seed/1502877338535-766e1452684a/600/600' },
+  { id: 's5', name: 'Frankfurt City Driving', city: 'Frankfurt', rating: 4.6, reviews: 143, price: 35, transmission: 'Automatic', languages: ['German', 'English', 'Russian'], availability: 'month', licenseTypes: ['Car'], image: 'https://picsum.photos/seed/1493238792000-8113da705763/600/600' },
+  { id: 's6', name: 'Berlin Kreuzberg Fahrschule', city: 'Berlin', rating: 4.8, reviews: 229, price: 39, transmission: 'Manual & Automatic', languages: ['German', 'Turkish', 'English'], availability: 'week', licenseTypes: ['Car', 'Motorcycle', 'Electric'], image: 'https://picsum.photos/seed/1552519507-da3b142c6e3d/600/600' },
+];
+
+const INSTRUCTOR_DEFS = [
+  { id: 'i1', name: 'Anna Weber', years: 8, languages: 'DE, EN', rating: 4.9, avail: 'available', photo: 'uploads/pasted-1783757145406-0.png', seed: 'anna' },
+  { id: 'i2', name: 'Markus Schmidt', years: 12, languages: 'DE, EN, TR', rating: 4.8, avail: 'booked', photo: 'uploads/pasted-1783757096321-0.png', seed: 'markus' },
+  { id: 'i3', name: 'Julia Klein', years: 5, languages: 'DE, RU', rating: 4.9, avail: 'available', photo: 'uploads/pasted-1783757157116-0.png', seed: 'julia' },
+  { id: 'i4', name: 'Tom Fischer', years: 15, languages: 'DE, EN', rating: 5.0, avail: 'available', photo: 'uploads/pasted-1783757114798-0.png', seed: 'tom' },
+  { id: 'i5', name: 'Elif Yildiz', years: 6, languages: 'DE, TR, EN', rating: 4.7, avail: 'booked', photo: 'uploads/pasted-1783757133584-0.png', seed: 'elif' },
+  { id: 'i6', name: 'Lukas Braun', years: 9, languages: 'DE, PL', rating: 4.8, avail: 'available', photo: 'uploads/pasted-1783757126062-0.png', seed: 'lukas' },
+];
+
+const TESTIMONIALS = [
+  { name: 'Sarah M.', quote: 'Booked my lesson in two minutes and passed on the first try.', stars: '★★★★★' },
+  { name: 'David K.', quote: 'My instructor spoke perfect English — huge relief as an expat.', stars: '★★★★★' },
+  { name: 'Elena R.', quote: 'The app kept me on track with reminders and progress.', stars: '★★★★★' },
+  { name: 'Yusuf A.', quote: 'Transparent pricing, no surprise fees. Loved it.', stars: '★★★★☆' },
+  { name: 'Mia T.', quote: 'Comparing schools side by side saved me so much time.', stars: '★★★★★' },
+  { name: 'Peter L.', quote: 'Best driving school experience in Germany, hands down.', stars: '★★★★★' },
+];
+
+const FAQ_DEFS = [
+  { id: 'f1', cat: 'Pricing', q: 'How much does a driving license cost in Germany?', a: 'Total cost typically ranges from €1,500 to €2,500 depending on city, license class, and number of lessons needed, including theory course, practical lessons, and exam fees.' },
+  { id: 'f2', cat: 'License Types', q: 'What license classes can I book through DriveHub?', a: 'We support Class B (car), A (motorcycle), C (truck), D (bus), BE (trailer), and specialized electric-vehicle instruction.' },
+  { id: 'f3', cat: 'Pricing', q: 'Are there hidden fees?', a: 'No — every school on DriveHub lists transparent per-lesson pricing upfront, including exam and material fees.' },
+  { id: 'f4', cat: 'Cancellation', q: 'Can I cancel or reschedule a lesson?', a: 'Yes, lessons can be rescheduled free of charge up to 24 hours in advance directly from the app.' },
+  { id: 'f5', cat: 'License Types', q: 'Do I need a theory course before practical lessons?', a: 'Yes, German law requires a completed theory course and passed theory exam before practical lessons begin.' },
+  { id: 'f6', cat: 'Cancellation', q: 'What happens if I fail my exam?', a: 'You can rebook additional practical lessons and retake the exam — many schools offer discounted retake packages.' },
+  { id: 'f7', cat: 'Pricing', q: 'Do international students get discounts?', a: 'Select partner schools offer student discounts — filter by "Student pricing" in search to see eligible schools.' },
+  { id: 'f8', cat: 'License Types', q: 'Is an automatic-only license valid in Germany?', a: 'Yes, though it restricts you to driving automatic-transmission vehicles unless you complete additional manual training.' },
+];
+
+class Component extends DCLogic {
+  state = {
+    scrolled: false,
+    navBg: 'rgba(255,255,255,0.6)',
+    megaMenuOpen: false,
+    citySuggestOpen: false,
+    licenseDropdownOpen: false,
+    languageDropdownOpen: false,
+    searchCity: '',
+    searchLicense: 'Car',
+    searchTransmission: 'any',
+    searchLanguage: 'Any',
+    searchDate: '',
+    filterLicenses: [],
+    minRating: 0,
+    maxPrice: 50,
+    availability: 'any',
+    sortBy: 'match',
+    sortDropdownOpen: false,
+    favorites: {},
+    compareIds: [],
+    compareModalOpen: false,
+    activeCategory: null,
+    revealed: {},
+    activeFeatureIdx: 0,
+    journeyScrollPct: 0,
+    instructorVideoId: null,
+    faqQuery: '',
+    faqOpenId: null,
+    faqActiveChip: null,
+    newsletterEmail: '',
+    newsletterSubmitted: false,
+    ctaCity: '',
+    hoveredCityName: null,
+    statsRevealed: false,
+    userLoc: null,
+    userLocLabel: '',
+    geoStatus: 'idle',
+  };
+
+  detectUserLocation = () => {
+    if (!navigator.geolocation) { this.setState({ geoStatus: 'unsupported' }); return; }
+    this.setState({ geoStatus: 'locating' });
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        const { lonMin, lonMax, latMin, latMax } = GERMANY_BBOX;
+        const pad = 2;
+        const inGermany = longitude > lonMin - pad && longitude < lonMax + pad && latitude > latMin - pad && latitude < latMax + pad;
+        if (!inGermany) { this.setState({ geoStatus: 'outside' }); return; }
+        const x = ((longitude - lonMin) / (lonMax - lonMin)) * 100;
+        const y = ((latMax - latitude) / (latMax - latMin)) * 100;
+        this.setState({ userLoc: { x: Math.max(2, Math.min(98, x)), y: Math.max(2, Math.min(98, y)) }, geoStatus: 'found', userLocLabel: 'your area' });
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10`);
+          const data = await res.json();
+          const label = data?.address?.city || data?.address?.town || data?.address?.village || data?.address?.state || 'your area';
+          this.setState({ userLocLabel: label });
+        } catch (err) { /* keep generic label */ }
+      },
+      () => this.setState({ geoStatus: 'denied' }),
+      { timeout: 8000 }
+    );
+  };
+
+  componentDidMount() {
+    this.detectUserLocation();
+    this._onScroll = () => {
+      const y = window.scrollY;
+      this.setState({ scrolled: y > 60 });
+      this.updateActiveFeature();
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+
+    this._onDocClick = () => this.closeAllDropdowns();
+    document.addEventListener('click', this._onDocClick);
+
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('data-reveal');
+          if (id === 'stats' && !this.state.statsRevealed) {
+            this.setState({ statsRevealed: true });
+          }
+          this.setState((s) => ({ revealed: { ...s.revealed, [id]: true } }));
+        }
+      });
+    }, { threshold: 0.2 });
+
+    this.featureEls = {};
+    this.updateActiveFeature();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+    document.removeEventListener('click', this._onDocClick);
+    if (this.observer) this.observer.disconnect();
+  }
+
+  setRef = (el) => { if (el && this.observer) this.observer.observe(el); };
+  setFeatureRef = (el) => {
+    if (!el) return;
+    const idx = parseInt(el.getAttribute('data-feature-idx'), 10);
+    if (!this.featureEls) this.featureEls = {};
+    this.featureEls[idx] = el;
+  };
+  updateActiveFeature = () => {
+    if (!this.featureEls) return;
+    const keys = Object.keys(this.featureEls);
+    if (keys.length === 0) return;
+    const centerY = window.innerHeight / 2;
+    let closestIdx = null;
+    let closestDist = Infinity;
+    keys.forEach((key) => {
+      const el = this.featureEls[key];
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const elCenter = rect.top + rect.height / 2;
+      const dist = Math.abs(elCenter - centerY);
+      if (dist < closestDist) { closestDist = dist; closestIdx = parseInt(key, 10); }
+    });
+    if (closestIdx !== null && closestIdx !== this.state.activeFeatureIdx) {
+      this.setState({ activeFeatureIdx: closestIdx });
+    }
+  };
+  scrollToFeature = (e) => {
+    const idx = parseInt(e.currentTarget.getAttribute('data-feature-idx'), 10);
+    const el = document.querySelector(`[data-reveal="why-${idx}"]`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  stopProp = (e) => { e.stopPropagation(); };
+
+  mkImgRef = (url) => (el) => { if (el && url) el.src = url; };
+  setHeroImgRef = (el) => {
+    if (!el) return;
+    const seed = { city: 'hero-road', autobahn: 'hero-autobahn', countryside: 'hero-countryside' }[this.props.heroStyle ?? 'city'];
+    el.src = `https://picsum.photos/seed/${seed}/1920/1920`;
+  };
+
+  // Nav
+  openMegaMenu = () => this.setState({ megaMenuOpen: true });
+  keepMegaMenuOpen = () => this.setState({ megaMenuOpen: true });
+  closeMegaMenu = () => this.setState({ megaMenuOpen: false });
+  selectCityFromMenu = (e) => {
+    const city = e.currentTarget.getAttribute('data-city');
+    this.setState({ searchCity: city, megaMenuOpen: false });
+    document.getElementById('search-results')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Hero search
+  onCityChange = (e) => this.setState({ searchCity: e.target.value, citySuggestOpen: true, licenseDropdownOpen: false, languageDropdownOpen: false });
+  openCitySuggest = () => this.setState({ citySuggestOpen: true, licenseDropdownOpen: false, languageDropdownOpen: false });
+  pickCity = (e) => { e.stopPropagation(); this.setState({ searchCity: e.currentTarget.getAttribute('data-city'), citySuggestOpen: false }); };
+  toggleLicenseDropdown = (e) => {
+    e.stopPropagation();
+    this.setState((s) => ({ licenseDropdownOpen: !s.licenseDropdownOpen, citySuggestOpen: false, languageDropdownOpen: false }));
+  };
+  pickLicense = (e) => { e.stopPropagation(); this.setState({ searchLicense: e.currentTarget.getAttribute('data-name'), licenseDropdownOpen: false }); };
+  toggleLanguageDropdown = (e) => {
+    e.stopPropagation();
+    this.setState((s) => ({ languageDropdownOpen: !s.languageDropdownOpen, citySuggestOpen: false, licenseDropdownOpen: false }));
+  };
+  pickLanguage = (e) => { e.stopPropagation(); this.setState({ searchLanguage: e.currentTarget.getAttribute('data-lang'), languageDropdownOpen: false }); };
+  closeAllDropdowns = () => this.setState({ citySuggestOpen: false, licenseDropdownOpen: false, languageDropdownOpen: false, sortDropdownOpen: false });
+  onDateChange = (e) => this.setState({ searchDate: e.target.value });
+  setTransmissionManual = () => this.setState({ searchTransmission: this.state.searchTransmission === 'manual' ? 'any' : 'manual' });
+  setTransmissionAuto = () => this.setState({ searchTransmission: this.state.searchTransmission === 'automatic' ? 'any' : 'automatic' });
+  runSearch = () => {
+    this.setState({ citySuggestOpen: false });
+    document.getElementById('search-results')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Filters (search results sidebar)
+  toggleFilterLicense = (e) => {
+    const name = e.currentTarget.getAttribute('data-name');
+    this.setState((s) => {
+      const has = s.filterLicenses.includes(name);
+      return { filterLicenses: has ? s.filterLicenses.filter((n) => n !== name) : [...s.filterLicenses, name] };
+    });
+  };
+  setMinRating = (e) => this.setState({ minRating: parseFloat(e.currentTarget.getAttribute('data-r')) });
+  setMaxPrice = (e) => this.setState({ maxPrice: parseInt(e.target.value, 10) });
+  setAvailability = (e) => this.setState({ availability: e.currentTarget.getAttribute('data-av') });
+  toggleSortDropdown = (e) => { e.stopPropagation(); this.setState((s) => ({ sortDropdownOpen: !s.sortDropdownOpen })); };
+  pickSort = (e) => { e.stopPropagation(); this.setState({ sortBy: e.currentTarget.getAttribute('data-sort'), sortDropdownOpen: false }); };
+  resetFilters = () => this.setState({ filterLicenses: [], minRating: 0, maxPrice: 50, availability: 'any', searchCity: '', searchTransmission: 'any', searchLanguage: 'Any' });
+
+  // Categories hover expand
+  expandCategory = (e) => this.setState({ activeCategory: parseInt(e.currentTarget.getAttribute('data-idx'), 10) });
+  collapseCategory = () => this.setState({ activeCategory: null });
+
+  // Favorites / compare
+  toggleFav = (id) => this.setState((s) => ({ favorites: { ...s.favorites, [id]: !s.favorites[id] } }));
+  toggleCompare = (id) => this.setState((s) => {
+    const has = s.compareIds.includes(id);
+    if (has) return { compareIds: s.compareIds.filter((x) => x !== id) };
+    const limit = this.props.compareLimit ?? 3;
+    if (s.compareIds.length >= limit) return {};
+    return { compareIds: [...s.compareIds, id] };
+  });
+  openCompareModal = () => this.setState({ compareModalOpen: true });
+  closeCompareModal = () => this.setState({ compareModalOpen: false });
+
+  // Journey scroll
+  setJourneyRef = (el) => { this.journeyEl = el; };
+  onJourneyScroll = () => {
+    if (!this.journeyEl) return;
+    const max = this.journeyEl.scrollWidth - this.journeyEl.clientWidth;
+    const pct = max > 0 ? (this.journeyEl.scrollLeft / max) * 100 : 0;
+    this.setState({ journeyScrollPct: pct });
+  };
+
+  // Instructors
+  openInstructorVideo = (e) => this.setState({ instructorVideoId: e.currentTarget.getAttribute('data-id') });
+  closeInstructorVideo = () => this.setState({ instructorVideoId: null });
+
+  // FAQ
+  onFaqQueryChange = (e) => this.setState({ faqQuery: e.target.value, faqActiveChip: null });
+  selectFaqChip = (e) => {
+    const chip = e.currentTarget.getAttribute('data-chip');
+    this.setState((s) => ({ faqActiveChip: s.faqActiveChip === chip ? null : chip, faqQuery: '' }));
+  };
+  toggleFaq = (e) => {
+    const id = e.currentTarget.getAttribute('data-id');
+    this.setState((s) => ({ faqOpenId: s.faqOpenId === id ? null : id }));
+  };
+
+  // Newsletter / CTA
+  onNewsletterChange = (e) => this.setState({ newsletterEmail: e.target.value });
+  submitNewsletter = () => { if (this.state.newsletterEmail) this.setState({ newsletterSubmitted: true }); };
+  onCtaCityChange = (e) => this.setState({ ctaCity: e.target.value });
+  ctaSearch = () => {
+    this.setState({ searchCity: this.state.ctaCity });
+    document.getElementById('search-results')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Footer map
+  hoverCity = (e) => this.setState({ hoveredCityName: e.currentTarget.getAttribute('data-city') });
+  unhoverCity = () => this.setState({ hoveredCityName: null });
+
+  scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  renderVals() {
+    const s = this.state;
+    const showTrustBand = this.props.showTrustBand ?? true;
+
+    const navItems = [
+      { label: 'Find Schools', onEnter: this.openMegaMenu, underlineWidth: '0%' },
+      { label: 'License Types', onEnter: this.openMegaMenu, underlineWidth: '0%' },
+      { label: 'Instructors', onEnter: this.closeMegaMenu, underlineWidth: '0%' },
+      { label: 'How It Works', onEnter: this.closeMegaMenu, underlineWidth: '0%' },
+    ];
+
+    const categories = CATEGORY_DEFS.map((c, idx) => {
+      const expanded = s.activeCategory === idx;
+      const isFilterActive = s.filterLicenses.includes(c.name);
+      return {
+        ...c,
+        idx,
+        expanded,
+        flexBasis: expanded ? 3 : 1,
+        imgScale: expanded ? 1.08 : 1,
+        writingMode: expanded ? 'horizontal-tb' : 'vertical-rl',
+        filterBg: isFilterActive ? '#2563EB' : '#F7F8FA',
+        filterColor: isFilterActive ? '#fff' : '#374151',
+        filterBorder: isFilterActive ? '#2563EB' : 'rgba(17,24,39,0.1)',
+        setImgRef: this.mkImgRef(c.image),
+      };
+    });
+
+    const citySuggestions = CITIES_DATA.filter((c) =>
+      c.name.toLowerCase().includes((s.searchCity || '').toLowerCase())
+    ).slice(0, 5);
+
+    const closedStyle = { opacity: 0, transform: 'translateY(-6px) scale(0.98)', pointerEvents: 'none' };
+    const openStyle = { opacity: 1, transform: 'translateY(0) scale(1)', pointerEvents: 'auto' };
+    const cityDropdownStyle = s.citySuggestOpen ? openStyle : closedStyle;
+    const licenseDropdownStyle = s.licenseDropdownOpen ? openStyle : closedStyle;
+    const languageDropdownStyle = s.languageDropdownOpen ? openStyle : closedStyle;
+    const selectedCat = CATEGORY_DEFS.find((c) => c.name === s.searchLicense);
+    const selectedLicenseIcon = selectedCat ? selectedCat.icon : '';
+    const licenseChevron = s.licenseDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    const languageChevron = s.languageDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+
+    let filteredSchools = SCHOOL_DEFS.filter((school) => {
+      if (s.searchCity && !school.city.toLowerCase().includes(s.searchCity.toLowerCase())) return false;
+      if (s.filterLicenses.length > 0 && !s.filterLicenses.some((lic) => school.licenseTypes.includes(lic))) return false;
+      if (s.searchTransmission === 'manual' && !school.transmission.toLowerCase().includes('manual')) return false;
+      if (s.searchTransmission === 'automatic' && !school.transmission.toLowerCase().includes('automatic')) return false;
+      if (s.searchLanguage !== 'Any' && !school.languages.includes(s.searchLanguage)) return false;
+      if (school.rating < s.minRating) return false;
+      if (school.price > s.maxPrice) return false;
+      if (s.availability !== 'any' && school.availability !== s.availability) return false;
+      return true;
+    });
+    if (s.sortBy === 'rating') filteredSchools = [...filteredSchools].sort((a, b) => b.rating - a.rating);
+    if (s.sortBy === 'price') filteredSchools = [...filteredSchools].sort((a, b) => a.price - b.price);
+    filteredSchools = filteredSchools.map((sc) => ({
+      ...sc,
+      isFav: !!s.favorites[sc.id],
+      isCompared: s.compareIds.includes(sc.id),
+    }));
+
+    const ratingOptions = [4.5, 4.7, 4.9].map((r) => ({
+      val: r, label: `${r}★+`,
+      bg: s.minRating === r ? '#2563EB' : '#F7F8FA',
+      color: s.minRating === r ? '#fff' : '#374151',
+    }));
+
+    const availabilityOptions = [
+      { val: 'any', label: 'Any time' },
+      { val: 'week', label: 'This week' },
+      { val: 'month', label: 'This month' },
+    ].map((a) => ({
+      ...a,
+      bg: s.availability === a.val ? '#2563EB' : '#F7F8FA',
+      color: s.availability === a.val ? '#fff' : '#374151',
+    }));
+
+    const sortLabels = { match: 'Best match', rating: 'Highest rated', price: 'Price: low to high' };
+    const sortOptions = ['match', 'rating', 'price'].map((v) => ({ val: v, label: sortLabels[v] }));
+    const activeFilterCount = s.filterLicenses.length + (s.minRating > 0 ? 1 : 0) + (s.maxPrice < 50 ? 1 : 0) + (s.availability !== 'any' ? 1 : 0) + (s.searchTransmission !== 'any' ? 1 : 0);
+
+    const compareList = s.compareIds.map((id) => SCHOOL_DEFS.find((sc) => sc.id === id)).filter(Boolean)
+      .map((sc) => ({ ...sc, setImgRef: this.mkImgRef(sc.image) }));
+
+    const statBlocks = [
+      { display: '500+', label: 'Partner Schools' },
+      { display: '12,000+', label: 'Licensed Students' },
+      { display: '94%', label: 'First-Try Pass Rate' },
+      { display: '4.8/5', label: 'Average Rating' },
+    ];
+    const partnerLogos = ['ADAC', 'TÜV Süd', 'Fahrschule.de', 'DEKRA', 'Führerschein24', 'MobilitätsAkademie', 'DriveSafe', 'AutoLern'];
+    const partnerLogosDoubled = [...partnerLogos, ...partnerLogos];
+
+    const whyFeatures = [
+      { idx: 0, revealId: 'why-0', number: '01', title: 'Verified Instructors', accentColor: '#2563EB', icon: '🎓', desc: 'Every instructor on DriveHub is certified, background-checked, and rated by real students.', bullets: ['Official BKF certification', 'Ongoing quality reviews', 'Verified student ratings'], image: 'https://picsum.photos/seed/1544005313-94ddf0286df2/520/520', seed: 'why1' },
+      { idx: 1, revealId: 'why-1', number: '02', title: 'Transparent Pricing', accentColor: '#10B981', icon: '💶', desc: 'See full lesson costs upfront — no hidden fees, no surprise add-ons at the end.', bullets: ['Per-lesson pricing shown upfront', 'No booking fees', 'Compare packages side by side'], image: 'https://picsum.photos/seed/1503736334956-4c8f8e92946d/520/520', seed: 'why2' },
+      { idx: 2, revealId: 'why-2', number: '03', title: 'Flexible Scheduling', accentColor: '#F97316', icon: '📅', desc: 'Book, reschedule, or cancel lessons in seconds — fit driving lessons around your life.', bullets: ['Reschedule free within 24h', 'Evening & weekend slots', 'Sync with your calendar'], image: 'https://picsum.photos/seed/1550355191-aa8a80b41353/520/520', seed: 'why3' },
+      { idx: 3, revealId: 'why-3', number: '04', title: 'Real Student Reviews', accentColor: '#111827', icon: '⭐', desc: 'Every review comes from a verified, completed lesson — no fake ratings, ever.', bullets: ['Verified-booking reviews only', 'Photo & video testimonials', 'Public pass-rate data'], image: 'https://picsum.photos/seed/1494905998402-395d579af36f/520/520', seed: 'why4' },
+    ].map((f) => {
+      const active = s.activeFeatureIdx === f.idx;
+      return {
+        ...f,
+        opacity: active ? 1 : 0,
+        imgScale: active ? 1.06 : 1,
+        dotHeight: active ? '32px' : '16px',
+        dotColor: active ? f.accentColor : 'rgba(17,24,39,0.15)',
+        textOpacity: 1,
+        textTransform: 'translateY(0)',
+        setImgRef: this.mkImgRef(f.image),
+      };
+    });
+    const whyActive = whyFeatures.find((f) => f.idx === s.activeFeatureIdx) || whyFeatures[0];
+    const whyActiveNumber = whyActive ? whyActive.number.replace(/^0/, '') : '1';
+    const whyActiveTitle = whyActive ? whyActive.title : '';
+    const whyActiveIcon = whyActive ? whyActive.icon : '';
+
+    const journeySteps = [
+      { num: 1, icon: '🔍', title: 'Choose School', desc: 'Compare certified schools and instructors near you.' },
+      { num: 2, icon: '🚗', title: 'Book Trial Lesson', desc: 'Try a lesson before committing to a full package.' },
+      { num: 3, icon: '📘', title: 'Theory Course', desc: 'Complete your mandatory theory classes online or in person.' },
+      { num: 4, icon: '🛣️', title: 'Practical Lessons', desc: 'Regular driving lessons tailored to your progress.' },
+      { num: 5, icon: '📝', title: 'Mock Exam', desc: 'Practice under real test conditions with feedback.' },
+      { num: 6, icon: '🎉', title: 'Get Licensed', desc: 'Pass your test and hit the road with confidence.' },
+    ].map((step) => ({ ...step, borderStyle: '1px solid rgba(17,24,39,0.06)' }));
+    const activeStep = Math.min(6, Math.max(1, Math.round((s.journeyScrollPct / 100) * 5) + 1));
+
+    const instructorChips = ['All Languages', 'Manual', 'Automatic', 'Berlin'];
+    const instructors = INSTRUCTOR_DEFS.map((ins) => ({
+      ...ins,
+      availColor: ins.avail === 'available' ? '#10B981' : '#F97316',
+      availLabel: ins.avail === 'available' ? 'Available' : 'Booked',
+      setImgRef: this.mkImgRef(ins.photo),
+    }));
+    const activeInstructor = INSTRUCTOR_DEFS.find((i) => i.id === s.instructorVideoId);
+
+    const reviewsDoubled = [...TESTIMONIALS, ...TESTIMONIALS];
+    const beforeAfter = [
+      { before: 'Nervous first-timer, never touched a wheel', after: 'Confident driver, passed on attempt one' },
+      { before: 'Anxious about German traffic rules', after: 'Aced the theory exam with 100% score' },
+    ];
+
+    const faqChips = [
+      { name: 'Pricing', borderColor: s.faqActiveChip === 'Pricing' ? '#2563EB' : 'rgba(17,24,39,0.12)', textColor: s.faqActiveChip === 'Pricing' ? '#2563EB' : '#374151' },
+      { name: 'License Types', borderColor: s.faqActiveChip === 'License Types' ? '#2563EB' : 'rgba(17,24,39,0.12)', textColor: s.faqActiveChip === 'License Types' ? '#2563EB' : '#374151' },
+      { name: 'Cancellation', borderColor: s.faqActiveChip === 'Cancellation' ? '#2563EB' : 'rgba(17,24,39,0.12)', textColor: s.faqActiveChip === 'Cancellation' ? '#2563EB' : '#374151' },
+    ];
+    const filteredFaqs = FAQ_DEFS.filter((f) => {
+      if (s.faqActiveChip) return f.cat === s.faqActiveChip;
+      if (s.faqQuery) return f.q.toLowerCase().includes(s.faqQuery.toLowerCase());
+      return true;
+    }).map((f) => ({ ...f, open: s.faqOpenId === f.id, chevronRotate: s.faqOpenId === f.id ? '180deg' : '0deg' }));
+
+    const mapCities = CITIES_DATA.map((c) => ({ ...c, hovered: s.hoveredCityName === c.name }));
+    const userLocVisible = s.geoStatus === 'found' && !!s.userLoc;
+    const mapCaptionByStatus = {
+      idle: 'Germany — hover a city',
+      locating: 'Detecting your location…',
+      found: 'Germany — hover a city',
+      denied: 'Germany — hover a city',
+      outside: "Looks like you're outside Germany",
+      unsupported: 'Germany — hover a city',
+    };
+    const mapCaption = mapCaptionByStatus[s.geoStatus] || 'Germany — hover a city';
+
+    const footerColumns = [
+      { title: 'COMPANY', links: ['About Us', 'Careers', 'Press', 'Blog'] },
+      { title: 'FOR STUDENTS', links: ['Find a School', 'Pricing', 'Mobile App', 'Success Stories'] },
+      { title: 'FOR SCHOOLS', links: ['List Your School', 'Partner Portal', 'Instructor Tools'] },
+      { title: 'LEGAL', links: ['Privacy Policy', 'Terms of Service', 'Imprint', 'Cookies'] },
+    ];
+
+    return {
+      navHeight: s.scrolled ? 68 : 88,
+      navPad: s.scrolled ? 12 : 16,
+      navBg: s.scrolled ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.55)',
+      navShadow: s.scrolled ? '0 12px 32px rgba(17,24,39,0.1)' : '0 8px 24px rgba(17,24,39,0.06)',
+      navItems,
+      megaMenuOpen: s.megaMenuOpen,
+      keepMegaMenuOpen: this.keepMegaMenuOpen,
+      closeMegaMenu: this.closeMegaMenu,
+      selectCityFromMenu: this.selectCityFromMenu,
+      categories,
+      mapCities,
+
+      setHeroImgRef: this.setHeroImgRef,
+      scrollIndicatorOpacity: s.scrolled ? 0 : 1,
+
+      searchCity: s.searchCity,
+      onCityChange: this.onCityChange,
+      openCitySuggest: this.openCitySuggest,
+      citySuggestOpen: s.citySuggestOpen,
+      citySuggestions,
+      pickCity: this.pickCity,
+      cityDropdownStyle,
+      searchLicense: s.searchLicense,
+      selectedLicenseIcon,
+      toggleLicenseDropdown: this.toggleLicenseDropdown,
+      pickLicense: this.pickLicense,
+      licenseDropdownStyle,
+      licenseChevron,
+      searchLanguage: s.searchLanguage,
+      toggleLanguageDropdown: this.toggleLanguageDropdown,
+      pickLanguage: this.pickLanguage,
+      languageDropdownStyle,
+      languageChevron,
+      languageOptions: LANGUAGES,
+      searchDate: s.searchDate,
+      onDateChange: this.onDateChange,
+      stopProp: this.stopProp,
+      manualBg: s.searchTransmission === 'manual' ? '#fff' : 'transparent',
+      manualColor: s.searchTransmission === 'manual' ? '#111827' : '#6b7280',
+      autoBg: s.searchTransmission === 'automatic' ? '#fff' : 'transparent',
+      autoColor: s.searchTransmission === 'automatic' ? '#111827' : '#6b7280',
+      setTransmissionManual: this.setTransmissionManual,
+      setTransmissionAuto: this.setTransmissionAuto,
+      runSearch: this.runSearch,
+
+      toggleFilterLicense: this.toggleFilterLicense,
+      setMinRating: this.setMinRating,
+      ratingOptions,
+      maxPrice: s.maxPrice,
+      setMaxPrice: this.setMaxPrice,
+      availabilityOptions,
+      setAvailability: this.setAvailability,
+      activeFilterCount,
+      activeFilterBadge: activeFilterCount > 0 ? `${activeFilterCount} active` : '',
+      sortBy: s.sortBy,
+      sortLabel: sortLabels[s.sortBy],
+      sortOptions,
+      toggleSortDropdown: this.toggleSortDropdown,
+      pickSort: this.pickSort,
+      sortDropdownStyle: s.sortDropdownOpen
+        ? { opacity: 1, transform: 'translateY(0) scale(1)', pointerEvents: 'auto' }
+        : { opacity: 0, transform: 'translateY(-6px) scale(0.98)', pointerEvents: 'none' },
+      sortChevron: s.sortDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+      resetFilters: this.resetFilters,
+      filteredSchools,
+      filteredCount: filteredSchools.length,
+      hasResults: filteredSchools.length > 0,
+      noResults: filteredSchools.length === 0,
+      citySuffix: s.searchCity ? ` in ${s.searchCity}` : '',
+
+      expandCategory: this.expandCategory,
+      collapseCategory: this.collapseCategory,
+
+      toggleFav: this.toggleFav,
+      toggleCompare: this.toggleCompare,
+      compareList,
+      compareTrayVisible: compareList.length > 0 && !s.compareModalOpen,
+      compareModalOpen: s.compareModalOpen,
+      openCompareModal: this.openCompareModal,
+      closeCompareModal: this.closeCompareModal,
+      stopProp: this.stopProp,
+
+      setRef: this.setRef,
+      showTrustBand,
+      statBlocks,
+      partnerLogosDoubled,
+
+      whyFeatures,
+      whyActiveNumber,
+      whyActiveTitle,
+      whyActiveIcon,
+      scrollToFeature: this.scrollToFeature,
+      setFeatureRef: this.setFeatureRef,
+
+      journeySteps,
+      journeyProgress: s.journeyScrollPct,
+      activeStep,
+      onJourneyScroll: this.onJourneyScroll,
+      setJourneyRef: this.setJourneyRef,
+
+      instructorChips,
+      instructors,
+      openInstructorVideo: this.openInstructorVideo,
+      closeInstructorVideo: this.closeInstructorVideo,
+      instructorVideoOpen: !!s.instructorVideoId,
+      setActiveInstructorImgRef: this.mkImgRef(activeInstructor ? activeInstructor.photo : ''),
+      activeInstructorName: activeInstructor ? activeInstructor.name : '',
+
+      setFeaturedTestimonialImgRef: this.mkImgRef('https://picsum.photos/seed/1494905998402-395d579af36f/700/700'),
+      beforeAfter,
+      reviewsDoubled,
+
+      setAppScreen1Ref: this.mkImgRef('https://picsum.photos/seed/1550355191-aa8a80b41353/220/220'),
+      setAppScreen2Ref: this.mkImgRef('https://picsum.photos/seed/1449965408869-eaa3f722e40d/220/220'),
+
+      faqQuery: s.faqQuery,
+      onFaqQueryChange: this.onFaqQueryChange,
+      faqChips,
+      selectFaqChip: this.selectFaqChip,
+      filteredFaqs,
+      toggleFaq: this.toggleFaq,
+
+      ctaCity: s.ctaCity,
+      onCtaCityChange: this.onCtaCityChange,
+      ctaSearch: this.ctaSearch,
+
+      newsletterEmail: s.newsletterEmail,
+      onNewsletterChange: this.onNewsletterChange,
+      submitNewsletter: this.submitNewsletter,
+      newsletterIcon: s.newsletterSubmitted ? '✓' : '→',
+      newsletterMsg: s.newsletterSubmitted ? 'Thanks — check your inbox to confirm.' : 'Tips, offers, and license news. No spam.',
+
+      hoverCity: this.hoverCity,
+      unhoverCity: this.unhoverCity,
+      userLocVisible,
+      userLocX: s.userLoc ? s.userLoc.x : 0,
+      userLocY: s.userLoc ? s.userLoc.y : 0,
+      userLocLabel: s.userLocLabel,
+      mapCaption,
+      footerColumns,
+      socials: ['𝕏', 'in', 'ig', 'yt'],
+
+      scrollToTop: this.scrollToTop,
+      backToTopOpacity: s.scrolled ? 1 : 0,
+      backToTopPointer: s.scrolled ? 'auto' : 'none',
+    };
+  }
+}
+
+</script>
+</body>
+</html>
