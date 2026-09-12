@@ -9,6 +9,7 @@
 <x-dc>
 <helmet>
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&f[]=satoshi@400,500,600,700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <style>
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -24,6 +25,8 @@
     @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
     @keyframes gradientDrift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
     input, select, button { font-family: inherit; }
+    .journey-track { scrollbar-width: none; -ms-overflow-style: none; }
+    .journey-track::-webkit-scrollbar { display: none; }
     a { color: #2563EB; text-decoration: none; }
     a:hover { color: #1d4ed8; }
   </style>
@@ -49,7 +52,7 @@
       </div>
       <div style="display:flex; align-items:center; gap:16px;">
         <div style="display:flex; align-items:center; gap:6px; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:500; color:#111827; background:#F7F8FA; padding:8px 14px; border-radius:100px; cursor:pointer;">
-          🇩🇪 <span>DE</span>
+          <i class="fa-solid fa-globe" style="color:#2563EB;" aria-hidden="true"></i> <span>DE</span>
         </div>
         <div style="font-family:'Satoshi', sans-serif; font-size:14px; font-weight:500; color:#111827; cursor:pointer;" style-hover="color:#2563EB;">Login</div>
         <div style="font-family:'Satoshi', sans-serif; font-size:14px; font-weight:600; color:#fff; background:#2563EB; padding:11px 22px; border-radius:100px; cursor:pointer; transition:transform 0.2s ease, box-shadow 0.2s ease;" style-hover="transform:translateY(-2px); box-shadow:0 8px 20px rgba(37,99,235,0.35);">Register</div>
@@ -72,13 +75,13 @@
           <div style="font-family:'Satoshi', sans-serif; font-size:12px; font-weight:600; color:#6b7280; letter-spacing:0.06em; margin-bottom:16px;">BY CITY</div>
           <sc-for list="{{ mapCities }}" as="c" hint-placeholder-count="5">
             <div onClick="{{ selectCityFromMenu }}" data-city="{{ c.name }}" style="display:flex; align-items:center; gap:10px; padding:8px 0; cursor:pointer;" style-hover="color:#2563EB;">
-              <span>📍</span><span style="font-family:'General Sans', sans-serif; font-size:14px;">{{ c.name }}</span>
+              <i class="fa-solid fa-location-dot" style="color:#2563EB;" aria-hidden="true"></i><span style="font-family:'General Sans', sans-serif; font-size:14px;">{{ c.name }}</span>
             </div>
           </sc-for>
         </div>
         <div style="background:linear-gradient(135deg, rgba(37,99,235,0.08), rgba(16,185,129,0.08)); border-radius:16px; padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
           <div style="font-family:'Clash Display', sans-serif; font-size:17px; font-weight:600; line-height:1.3;">Compare 500+ certified schools across Germany</div>
-          <div style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; color:#2563EB; margin-top:12px;">Explore now →</div>
+          <div style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; color:#2563EB; margin-top:12px;">Explore now <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></div>
         </div>
       </div>
     </sc-if>
@@ -106,7 +109,7 @@
         </div>
         <div style="display:flex; align-items:center; gap:40px; margin-top:48px;">
           <div>
-            <div style="font-family:'Clash Display', sans-serif; font-size:32px; font-weight:700; color:#fff; line-height:1;">4.8 <span style="color:#F97316;">★</span></div>
+            <div style="font-family:'Clash Display', sans-serif; font-size:32px; font-weight:700; color:#fff; line-height:1;">4.8 <i class="fa-solid fa-star" style="color:#F97316;" aria-hidden="true"></i></div>
             <div style="font-family:'Satoshi', sans-serif; font-size:13px; color:rgba(255,255,255,0.65); margin-top:6px;">Average Rating</div>
           </div>
           <div style="width:1px; height:40px; background:rgba(255,255,255,0.2);"></div>
@@ -132,7 +135,7 @@
         <div style="position:absolute; top:60px; left:0; width:220px; background:#fff; border-radius:16px; box-shadow:0 16px 40px rgba(17,24,39,0.14); padding:8px; z-index:20; opacity:{{ cityDropdownStyle.opacity }}; transform:{{ cityDropdownStyle.transform }}; pointer-events:{{ cityDropdownStyle.pointerEvents }}; transition:opacity 0.22s ease, transform 0.22s ease;">
           <sc-for list="{{ citySuggestions }}" as="c" hint-placeholder-count="4">
             <div onClick="{{ pickCity }}" data-city="{{ c.name }}" style="padding:10px 12px; border-radius:10px; cursor:pointer; display:flex; justify-content:space-between; font-family:'General Sans', sans-serif; font-size:14px;" style-hover="background:#F7F8FA;">
-              <span>📍 {{ c.name }}</span>
+              <span><i class="fa-solid fa-location-dot" style="color:#2563EB;" aria-hidden="true"></i> {{ c.name }}</span>
               <span style="color:#9ca3af; font-size:12px;">{{ c.count }} schools</span>
             </div>
           </sc-for>
@@ -142,13 +145,13 @@
       <div style="position:relative; padding:0 20px; border-right:1px solid rgba(17,24,39,0.08); cursor:pointer;" onClick="{{ toggleLicenseDropdown }}">
         <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#6b7280; margin-bottom:4px;">LICENSE</div>
         <div style="display:flex; align-items:center; justify-content:space-between;">
-          <span style="font-family:'General Sans', sans-serif; font-size:15px; font-weight:500; color:#111827;">{{ selectedLicenseIcon }} {{ searchLicense }}</span>
-          <span style="color:#9ca3af; font-size:11px; transform:{{ licenseChevron }}; transition:transform 0.25s ease;">▾</span>
+          <span style="font-family:'General Sans', sans-serif; font-size:15px; font-weight:500; color:#111827;"><i class="{{ selectedLicenseIcon }}" style="color:#2563EB; margin-right:6px;" aria-hidden="true"></i>{{ searchLicense }}</span>
+          <i class="fa-solid fa-chevron-down" style="color:#9ca3af; font-size:11px; transform:{{ licenseChevron }}; transition:transform 0.25s ease;" aria-hidden="true"></i>
         </div>
         <div style="position:absolute; top:60px; left:0; width:190px; background:#fff; border-radius:16px; box-shadow:0 16px 40px rgba(17,24,39,0.14); padding:8px; z-index:20; opacity:{{ licenseDropdownStyle.opacity }}; transform:{{ licenseDropdownStyle.transform }}; pointer-events:{{ licenseDropdownStyle.pointerEvents }}; transition:opacity 0.22s ease, transform 0.22s ease;">
           <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="6">
             <div onClick="{{ pickLicense }}" data-name="{{ cat.name }}" style="padding:9px 12px; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:8px; font-family:'General Sans', sans-serif; font-size:14px;" style-hover="background:#F7F8FA;">
-              <span>{{ cat.icon }}</span><span>{{ cat.name }}</span>
+              <i class="{{ cat.icon }}" style="color:#2563EB; width:18px; text-align:center;" aria-hidden="true"></i><span>{{ cat.name }}</span>
             </div>
           </sc-for>
         </div>
@@ -166,7 +169,7 @@
         <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#6b7280; margin-bottom:4px;">LANGUAGE</div>
         <div style="display:flex; align-items:center; justify-content:space-between;">
           <span style="font-family:'General Sans', sans-serif; font-size:15px; font-weight:500; color:#111827;">{{ searchLanguage }}</span>
-          <span style="color:#9ca3af; font-size:11px; transform:{{ languageChevron }}; transition:transform 0.25s ease;">▾</span>
+          <i class="fa-solid fa-chevron-down" style="color:#9ca3af; font-size:11px; transform:{{ languageChevron }}; transition:transform 0.25s ease;" aria-hidden="true"></i>
         </div>
         <div style="position:absolute; top:60px; left:0; width:170px; background:#fff; border-radius:16px; box-shadow:0 16px 40px rgba(17,24,39,0.14); padding:8px; z-index:20; opacity:{{ languageDropdownStyle.opacity }}; transform:{{ languageDropdownStyle.transform }}; pointer-events:{{ languageDropdownStyle.pointerEvents }}; transition:opacity 0.22s ease, transform 0.22s ease;">
           <div onClick="{{ pickLanguage }}" data-lang="Any" style="padding:9px 12px; border-radius:10px; cursor:pointer; font-family:'General Sans', sans-serif; font-size:14px;" style-hover="background:#F7F8FA;">Any language</div>
@@ -182,7 +185,7 @@
       </div>
 
       <div onClick="{{ runSearch }}" style="margin-left:16px; width:56px; height:56px; border-radius:16px; background:#2563EB; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:transform 0.2s ease, box-shadow 0.2s ease; flex-shrink:0;" style-hover="transform:translateY(-2px); box-shadow:0 12px 24px rgba(37,99,235,0.4);">
-        <span style="color:#fff; font-size:20px;">→</span>
+        <i class="fa-solid fa-arrow-right" style="color:#fff; font-size:20px;" aria-hidden="true"></i>
       </div>
     </div>
 
@@ -260,7 +263,7 @@
           <div style="position:relative;" onClick="{{ toggleSortDropdown }}">
             <div style="display:flex; align-items:center; gap:8px; border:1px solid rgba(17,24,39,0.1); border-radius:100px; padding:9px 16px; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:500; background:#fff; cursor:pointer;">
               <span>{{ sortLabel }}</span>
-              <span style="color:#6b7280; font-size:11px; transform:{{ sortChevron }}; transition:transform 0.25s ease;">▾</span>
+              <i class="fa-solid fa-chevron-down" style="color:#6b7280; font-size:11px; transform:{{ sortChevron }}; transition:transform 0.25s ease;" aria-hidden="true"></i>
             </div>
             <div style="position:absolute; top:44px; right:0; width:190px; background:#fff; border-radius:16px; box-shadow:0 16px 40px rgba(17,24,39,0.14); padding:8px; z-index:20; opacity:{{ sortDropdownStyle.opacity }}; transform:{{ sortDropdownStyle.transform }}; pointer-events:{{ sortDropdownStyle.pointerEvents }}; transition:opacity 0.22s ease, transform 0.22s ease;">
               <sc-for list="{{ sortOptions }}" as="opt" hint-placeholder-count="3">
@@ -279,7 +282,7 @@
         </sc-if>
         <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
           <div style="background:#fff; border-radius:24px; padding:64px 32px; text-align:center;">
-            <div style="font-size:32px; margin-bottom:16px;">🔍</div>
+            <i class="fa-solid fa-magnifying-glass" style="font-size:32px; color:#2563EB; margin-bottom:16px;" aria-hidden="true"></i>
             <div style="font-family:'Clash Display', sans-serif; font-size:20px; font-weight:600; margin-bottom:8px;">No schools match those filters</div>
             <div style="font-family:'General Sans', sans-serif; font-size:14px; color:#6b7280; margin-bottom:20px;">Try widening your price range or clearing a filter.</div>
             <div onClick="{{ resetFilters }}" style="display:inline-block; background:#2563EB; color:#fff; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; padding:11px 22px; border-radius:100px; cursor:pointer;">Reset filters</div>
@@ -308,15 +311,15 @@
       <div onClick="{{ stopProp }}" style="background:#fff; border-radius:32px; max-width:900px; width:100%; max-height:80vh; overflow:auto; padding:40px; box-shadow:0 32px 80px rgba(17,24,39,0.2);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
           <div style="font-family:'Clash Display', sans-serif; font-size:26px; font-weight:600;">Compare Schools</div>
-          <div onClick="{{ closeCompareModal }}" style="width:36px; height:36px; border-radius:50%; background:#F7F8FA; display:flex; align-items:center; justify-content:center; cursor:pointer;">✕</div>
+          <div onClick="{{ closeCompareModal }}" style="width:36px; height:36px; border-radius:50%; background:#F7F8FA; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#2563EB;"><i class="fa-solid fa-xmark" aria-label="Close comparison"></i></div>
         </div>
         <div style="display:grid; grid-template-columns:repeat({{ compareList.length }}, 1fr); gap:20px;">
           <sc-for list="{{ compareList }}" as="s" hint-placeholder-count="3">
             <div style="border:1px solid rgba(17,24,39,0.08); border-radius:20px; padding:20px;">
               <img ref="{{ s.setImgRef }}" style="width:100%; height:120px; object-fit:cover; border-radius:12px; margin-bottom:12px;"/>
               <div style="font-family:'Clash Display', sans-serif; font-size:17px; font-weight:600; margin-bottom:8px;">{{ s.name }}</div>
-              <div style="font-family:'General Sans', sans-serif; font-size:13px; color:#6b7280; margin-bottom:4px;">📍 {{ s.city }}</div>
-              <div style="font-family:'General Sans', sans-serif; font-size:13px; color:#6b7280; margin-bottom:4px;">⭐ {{ s.rating }} ({{ s.reviews }} reviews)</div>
+              <div style="font-family:'General Sans', sans-serif; font-size:13px; color:#6b7280; margin-bottom:4px;"><i class="fa-solid fa-location-dot" style="color:#2563EB;" aria-hidden="true"></i> {{ s.city }}</div>
+              <div style="font-family:'General Sans', sans-serif; font-size:13px; color:#6b7280; margin-bottom:4px;"><i class="fa-solid fa-star" style="color:#F97316;" aria-hidden="true"></i> {{ s.rating }} ({{ s.reviews }} reviews)</div>
               <div style="font-family:'General Sans', sans-serif; font-size:13px; color:#6b7280; margin-bottom:4px;">from €{{ s.price }}/lesson</div>
               <div style="font-family:'General Sans', sans-serif; font-size:13px; color:#6b7280;">{{ s.transmission }}</div>
             </div>
@@ -365,14 +368,14 @@
             <sc-if value="{{ cat.isNew }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute; top:20px; right:20px; background:#10B981; color:#fff; font-family:'Satoshi', sans-serif; font-size:11px; font-weight:700; padding:5px 12px; border-radius:100px;">NEW</div>
             </sc-if>
-            <div style="position:absolute; top:20px; left:20px; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.2); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; font-size:20px;">{{ cat.icon }}</div>
+            <div style="position:absolute; top:20px; left:20px; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.2); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; font-size:20px; color:#fff;"><i class="{{ cat.icon }}" aria-hidden="true"></i></div>
             <div style="position:absolute; bottom:0; left:0; right:0; padding:24px; color:#fff;">
               <div style="font-family:'Clash Display', sans-serif; font-size:22px; font-weight:600; writing-mode:{{ cat.writingMode }}; white-space:nowrap;">{{ cat.name }}</div>
               <sc-if value="{{ cat.expanded }}" hint-placeholder-val="{{ false }}">
                 <div style="margin-top:10px; opacity:1; transition:opacity 0.3s ease;">
                   <div style="font-family:'General Sans', sans-serif; font-size:13px; color:rgba(255,255,255,0.8); margin-bottom:10px;">{{ cat.desc }}</div>
                   <div style="font-family:'Satoshi', sans-serif; font-size:12px; color:rgba(255,255,255,0.7); margin-bottom:10px;">from €{{ cat.cost }} · {{ cat.duration }}</div>
-                  <div style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; color:#fff;">Explore Schools →</div>
+                  <div style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; color:#fff;">Explore Schools <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></div>
                 </div>
               </sc-if>
             </div>
@@ -395,7 +398,7 @@
         </sc-for>
         <div style="position:absolute; inset:0; background:linear-gradient(0deg, rgba(17,24,39,0.75) 0%, rgba(17,24,39,0.05) 45%, rgba(17,24,39,0.15) 100%);"></div>
 
-        <div style="position:absolute; right:28px; top:28px; width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.18); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; font-size:26px; z-index:2;">{{ whyActiveIcon }}</div>
+        <div style="position:absolute; right:28px; top:28px; width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.18); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; font-size:26px; color:#fff; z-index:2;"><i class="{{ whyActiveIcon }}" aria-hidden="true"></i></div>
 
         <div style="position:absolute; left:28px; top:28px; display:flex; flex-direction:column; gap:10px; z-index:2;">
           <sc-for list="{{ whyFeatures }}" as="f" hint-placeholder-count="4">
@@ -417,7 +420,7 @@
               <div style="font-family:'General Sans', sans-serif; font-size:17px; color:#4b5563; max-width:460px; line-height:1.6; margin-bottom:20px;">{{ f.desc }}</div>
               <sc-for list="{{ f.bullets }}" as="b" hint-placeholder-count="3">
                 <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px; font-family:'General Sans', sans-serif; font-size:15px; color:#111827;">
-                  <span style="color:{{ f.accentColor }};">✓</span>{{ b }}
+                  <i class="fa-solid fa-check" style="color:{{ f.accentColor }};" aria-hidden="true"></i>{{ b }}
                 </div>
               </sc-for>
             </div>
@@ -431,16 +434,20 @@
   <div data-screen-label="Learning Journey" style="background:#F7F8FA; padding:120px 0;">
     <div style="max-width:1320px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; align-items:center; margin-bottom:48px;">
       <div style="font-family:'Clash Display', sans-serif; font-size:48px; font-weight:600;">Your learning journey</div>
-      <div style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; color:#6b7280; background:#fff; padding:10px 18px; border-radius:100px;">Step {{ activeStep }} / 6</div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600; color:#6b7280; background:#fff; padding:10px 18px; border-radius:100px;">Step {{ activeStep }} / 6</div>
+        <div onClick="{{ journeyPrevious }}" title="Previous step" aria-label="Previous learning journey step" style="width:40px; height:40px; border:1px solid rgba(17,24,39,0.1); border-radius:50%; background:#fff; color:#2563EB; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 4px 12px rgba(17,24,39,0.06);"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></div>
+        <div onClick="{{ journeyNext }}" title="Next step" aria-label="Next learning journey step" style="width:40px; height:40px; border:1px solid rgba(17,24,39,0.1); border-radius:50%; background:#2563EB; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 4px 12px rgba(37,99,235,0.25);"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></div>
+      </div>
     </div>
     <div style="height:2px; background:rgba(17,24,39,0.08); max-width:1320px; margin:0 auto 40px; position:relative; border-radius:2px;">
       <div style="height:2px; width:{{ journeyProgress }}%; background:#2563EB; border-radius:2px; transition:width 0.15s linear;"></div>
     </div>
-    <div onScroll="{{ onJourneyScroll }}" ref="{{ setJourneyRef }}" style="display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; padding:0 24px 20px; max-width:100vw;">
+    <div class="journey-track" onScroll="{{ onJourneyScroll }}" ref="{{ setJourneyRef }}" style="display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; padding:0 24px 20px; max-width:100vw;">
       <sc-for list="{{ journeySteps }}" as="step" hint-placeholder-count="6">
         <div style="scroll-snap-align:center; flex:0 0 340px; background:#fff; border-radius:24px; padding:28px; box-shadow:0 4px 16px rgba(17,24,39,0.06); border:{{ step.borderStyle }};">
           <div style="width:40px; height:40px; border-radius:50%; background:#2563EB; color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Clash Display', sans-serif; font-weight:600; font-size:16px; margin-bottom:20px;">{{ step.num }}</div>
-          <div style="font-size:28px; margin-bottom:10px;">{{ step.icon }}</div>
+          <div style="font-size:28px; margin-bottom:10px; color:#2563EB;"><i class="{{ step.icon }}" aria-hidden="true"></i></div>
           <div style="font-family:'Clash Display', sans-serif; font-size:21px; font-weight:600; margin-bottom:8px;">{{ step.title }}</div>
           <div style="font-family:'General Sans', sans-serif; font-size:14px; color:#6b7280; line-height:1.5;">{{ step.desc }}</div>
         </div>
@@ -463,7 +470,7 @@
             <div onClick="{{ openInstructorVideo }}" data-id="{{ ins.id }}" style="position:relative; border-radius:24px; overflow:hidden; height:320px; cursor:pointer;">
               <img ref="{{ ins.setImgRef }}" style="width:100%; height:100%; object-fit:cover;" alt=""/>
               <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
-                <div style="width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.25); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;">▶</div>
+                <div style="width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.25); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;"><i class="fa-solid fa-play" aria-hidden="true"></i></div>
               </div>
               <div style="position:absolute; top:16px; right:16px; display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.85); padding:5px 10px; border-radius:100px;">
                 <span style="width:7px; height:7px; border-radius:50%; background:{{ ins.availColor }};"></span>
@@ -490,7 +497,7 @@
       <div onClick="{{ stopProp }}" style="position:relative; width:100%; max-width:720px; aspect-ratio:16/9; border-radius:24px; overflow:hidden; background:#111827;">
         <img ref="{{ setActiveInstructorImgRef }}" style="width:100%; height:100%; object-fit:cover; opacity:0.6;" alt=""/>
         <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-family:'General Sans', sans-serif; font-size:15px;">Video intro placeholder — {{ activeInstructorName }}</div>
-        <div onClick="{{ closeInstructorVideo }}" style="position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.2); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;">✕</div>
+        <div onClick="{{ closeInstructorVideo }}" style="position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.2); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><i class="fa-solid fa-xmark" aria-label="Close instructor video"></i></div>
       </div>
     </div>
   </sc-if>
@@ -505,7 +512,7 @@
           <img ref="{{ setFeaturedTestimonialImgRef }}" style="width:100%; height:100%; object-fit:cover;" alt=""/>
           <div style="position:absolute; inset:0; background:linear-gradient(0deg, rgba(17,24,39,0.6), transparent 40%); display:flex; align-items:flex-end; padding:28px;">
             <div>
-              <div style="width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.25); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; color:#fff; margin-bottom:16px;">▶</div>
+              <div style="width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.25); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; color:#fff; margin-bottom:16px;"><i class="fa-solid fa-play" aria-hidden="true"></i></div>
               <div style="font-family:'Clash Display', sans-serif; font-size:20px; font-weight:600; color:#fff;">Sarah, 24 — Passed in 6 weeks</div>
             </div>
           </div>
@@ -517,7 +524,7 @@
                 <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#9ca3af; margin-bottom:6px;">BEFORE</div>
                 <div style="font-family:'General Sans', sans-serif; font-size:14px; color:#374151;">{{ ba.before }}</div>
               </div>
-              <div style="color:#10B981; font-size:18px; padding:0 8px;">→</div>
+              <i class="fa-solid fa-arrow-right" style="color:#10B981; font-size:18px; padding:0 8px;" aria-hidden="true"></i>
               <div style="padding:24px; background:rgba(16,185,129,0.06);">
                 <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; color:#10B981; margin-bottom:6px;">AFTER</div>
                 <div style="font-family:'General Sans', sans-serif; font-size:14px; color:#111827;">{{ ba.after }}</div>
@@ -530,7 +537,7 @@
         <div style="display:flex; gap:20px; width:max-content; animation:marqueeScroll 40s linear infinite;">
           <sc-for list="{{ reviewsDoubled }}" as="rev" hint-placeholder-count="12">
             <div style="width:300px; flex-shrink:0; background:#F7F8FA; border-radius:20px; padding:24px;">
-              <div style="color:#F97316; font-size:14px; margin-bottom:10px;">{{ rev.stars }}</div>
+              <div style="color:#F97316; font-size:14px; margin-bottom:10px;" aria-label="5 out of 5 stars"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i></div>
               <div style="font-family:'General Sans', sans-serif; font-size:14px; color:#374151; line-height:1.5; margin-bottom:14px;">"{{ rev.quote }}"</div>
               <div style="font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600;">{{ rev.name }}</div>
             </div>
@@ -548,9 +555,9 @@
       <div>
         <div style="font-family:'Clash Display', sans-serif; font-size:44px; font-weight:600; line-height:1.1; margin-bottom:20px;">Your license journey,<br/>in your pocket</div>
         <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:32px;">
-          <div style="display:flex; align-items:center; gap:12px; font-family:'General Sans', sans-serif; font-size:15px;"><span style="color:#10B981;">✓</span> Book & reschedule lessons instantly</div>
-          <div style="display:flex; align-items:center; gap:12px; font-family:'General Sans', sans-serif; font-size:15px;"><span style="color:#10B981;">✓</span> Track your progress toward your test</div>
-          <div style="display:flex; align-items:center; gap:12px; font-family:'General Sans', sans-serif; font-size:15px;"><span style="color:#10B981;">✓</span> Chat directly with your instructor</div>
+          <div style="display:flex; align-items:center; gap:12px; font-family:'General Sans', sans-serif; font-size:15px;"><i class="fa-solid fa-check" style="color:#10B981;" aria-hidden="true"></i> Book & reschedule lessons instantly</div>
+          <div style="display:flex; align-items:center; gap:12px; font-family:'General Sans', sans-serif; font-size:15px;"><i class="fa-solid fa-check" style="color:#10B981;" aria-hidden="true"></i> Track your progress toward your test</div>
+          <div style="display:flex; align-items:center; gap:12px; font-family:'General Sans', sans-serif; font-size:15px;"><i class="fa-solid fa-check" style="color:#10B981;" aria-hidden="true"></i> Chat directly with your instructor</div>
         </div>
         <div style="display:flex; gap:12px; align-items:center;">
           <div style="background:#111827; color:#fff; border-radius:12px; padding:10px 18px; font-family:'Satoshi', sans-serif; font-size:13px; font-weight:600;">App Store</div>
@@ -565,7 +572,7 @@
           <div style="width:100%; height:100%; background:#fff; border-radius:26px; overflow:hidden; position:relative;">
             <img ref="{{ setAppScreen1Ref }}" style="width:100%; height:100%; object-fit:cover; opacity:0.35;" alt=""/>
             <div style="position:absolute; top:40px; left:12px; right:12px; background:#fff; border-radius:16px; padding:12px; box-shadow:0 8px 20px rgba(17,24,39,0.15);">
-              <div style="display:flex; align-items:center; gap:8px; font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600;"><span style="color:#10B981;">✓</span> Lesson confirmed</div>
+              <div style="display:flex; align-items:center; gap:8px; font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600;"><i class="fa-solid fa-check" style="color:#10B981;" aria-hidden="true"></i> Lesson confirmed</div>
             </div>
           </div>
         </div>
@@ -573,7 +580,7 @@
           <div style="width:100%; height:100%; background:#fff; border-radius:26px; overflow:hidden; position:relative;">
             <img ref="{{ setAppScreen2Ref }}" style="width:100%; height:100%; object-fit:cover;" alt=""/>
             <div style="position:absolute; top:100px; left:12px; right:12px; background:#fff; border-radius:16px; padding:12px; box-shadow:0 8px 24px rgba(17,24,39,0.18); animation:toastIn 4s ease-in-out infinite;">
-              <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; margin-bottom:2px;">✓ Lesson tomorrow, 2pm</div>
+              <div style="font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; margin-bottom:2px;"><i class="fa-solid fa-calendar-check" style="color:#10B981;" aria-hidden="true"></i> Lesson tomorrow, 2pm</div>
               <div style="font-family:'General Sans', sans-serif; font-size:10px; color:#6b7280;">Herr Weber · Mitte, Berlin</div>
             </div>
           </div>
@@ -639,7 +646,7 @@
           <div style="font-family:'Clash Display', sans-serif; font-size:64px; font-weight:700; color:#fff; line-height:1.05; margin-bottom:32px;">Let's get you<br/>on the road.</div>
           <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:100px; padding:6px; display:flex; align-items:center; gap:8px; max-width:400px;">
             <input value="{{ newsletterEmail }}" onChange="{{ onNewsletterChange }}" placeholder="Your email" style="flex:1; border:none; outline:none; background:transparent; padding:10px 18px; font-family:'General Sans', sans-serif; font-size:14px; color:#fff;"/>
-            <div onClick="{{ submitNewsletter }}" style="width:40px; height:40px; border-radius:50%; background:#2563EB; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; flex-shrink:0;">{{ newsletterIcon }}</div>
+            <div onClick="{{ submitNewsletter }}" style="width:40px; height:40px; border-radius:50%; background:#2563EB; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; flex-shrink:0;"><i class="{{ newsletterIcon }}" aria-label="{{ newsletterSubmitted ? 'Subscription confirmed' : 'Submit email' }}"></i></div>
           </div>
           <div style="font-family:'General Sans', sans-serif; font-size:12px; color:rgba(255,255,255,0.4); margin-top:10px;">{{ newsletterMsg }}</div>
         </div>
@@ -662,7 +669,7 @@
               <div style="width:12px; height:12px; border-radius:50%; background:#F97316; border:2px solid #fff; position:relative; box-shadow:0 0 0 3px rgba(249,115,22,0.25);">
                 <div style="position:absolute; inset:-6px; border-radius:50%; background:#F97316; opacity:0.5; animation:pulseDot 2s ease-out infinite;"></div>
               </div>
-              <div style="position:absolute; top:18px; left:50%; transform:translateX(-50%); background:#F97316; color:#fff; padding:6px 12px; border-radius:100px; font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; white-space:nowrap; box-shadow:0 8px 20px rgba(0,0,0,0.3);">📍 You — {{ userLocLabel }}</div>
+              <div style="position:absolute; top:18px; left:50%; transform:translateX(-50%); background:#F97316; color:#fff; padding:6px 12px; border-radius:100px; font-family:'Satoshi', sans-serif; font-size:11px; font-weight:600; white-space:nowrap; box-shadow:0 8px 20px rgba(0,0,0,0.3);"><i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i> You — {{ userLocLabel }}</div>
             </div>
           </sc-if>
           <div style="position:absolute; bottom:12px; right:16px; font-family:'Satoshi', sans-serif; font-size:11px; color:rgba(255,255,255,0.4); z-index:2;">{{ mapCaption }}</div>
@@ -711,21 +718,21 @@ const GERMANY_BBOX = { lonMin: 5.87, lonMax: 15.04, latMin: 47.27, latMax: 55.06
 const LANGUAGES = ['German', 'English', 'Turkish', 'Arabic', 'Russian', 'Polish'];
 
 const CATEGORY_DEFS = [
-  { name: 'Car', icon: '🚗', desc: 'Class B — cars & light vehicles', cost: 1890, duration: '3 months', image: 'https://picsum.photos/seed/1449965408869-eaa3f722e40d/600/600', isNew: false },
-  { name: 'Motorcycle', icon: '🏍️', desc: 'Class A — motorcycles, all sizes', cost: 1450, duration: '2 months', image: 'https://picsum.photos/seed/1558980664-10e7170b5df9/600/600', isNew: false },
-  { name: 'Truck', icon: '🚛', desc: 'Class C — trucks & heavy goods', cost: 2600, duration: '4 months', image: 'https://picsum.photos/seed/1601584115197-04ecc0da31d7/600/600', isNew: false },
-  { name: 'Bus', icon: '🚌', desc: 'Class D — passenger buses', cost: 2900, duration: '4 months', image: 'https://picsum.photos/seed/1570125909232-eb263c188f7e/600/600', isNew: false },
-  { name: 'Trailer', icon: '🚚', desc: 'Class BE — cars with trailers', cost: 690, duration: '3 weeks', image: 'https://picsum.photos/seed/1519003722824-194d4455a60c/600/600', isNew: false },
-  { name: 'Electric', icon: '⚡', desc: 'EV-specialized instruction', cost: 1990, duration: '3 months', image: 'https://picsum.photos/seed/1593941707882-a5bba14938c7/600/600', isNew: true },
+  { name: 'Car', icon: 'fa-solid fa-car', desc: 'Class B — cars & light vehicles', cost: 1890, duration: '3 months', image: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=85', isNew: false },
+  { name: 'Motorcycle', icon: 'fa-solid fa-motorcycle', desc: 'Class A — motorcycles, all sizes', cost: 1450, duration: '2 months', image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1200&q=85', isNew: false },
+  { name: 'Truck', icon: 'fa-solid fa-truck', desc: 'Class C — trucks & heavy goods', cost: 2600, duration: '4 months', image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=85', isNew: false },
+  { name: 'Bus', icon: 'fa-solid fa-bus', desc: 'Class D — passenger buses', cost: 2900, duration: '4 months', image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=85', isNew: false },
+  { name: 'Trailer', icon: 'fa-solid fa-truck-moving', desc: 'Class BE — cars with trailers', cost: 690, duration: '3 weeks', image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=85', isNew: false },
+  { name: 'Electric', icon: 'fa-solid fa-bolt', desc: 'EV-specialized instruction', cost: 1990, duration: '3 months', image: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=1200&q=85', isNew: true },
 ];
 
 const SCHOOL_DEFS = [
-  { id: 's1', name: 'Fahrschule Berlin Mitte', city: 'Berlin', rating: 4.9, reviews: 312, price: 38, transmission: 'Manual & Automatic', languages: ['German', 'English'], availability: 'week', licenseTypes: ['Car', 'Motorcycle'], image: 'https://picsum.photos/seed/1503736334956-4c8f8e92946d/600/600' },
-  { id: 's2', name: 'München Fahrschule Nord', city: 'Munich', rating: 4.8, reviews: 201, price: 42, transmission: 'Automatic', languages: ['German', 'English', 'Turkish'], availability: 'month', licenseTypes: ['Car', 'Electric'], image: 'https://picsum.photos/seed/1494905998402-395d579af36f/600/600' },
-  { id: 's3', name: 'Hamburg Drive Academy', city: 'Hamburg', rating: 4.7, reviews: 168, price: 36, transmission: 'Manual', languages: ['German', 'Polish'], availability: 'week', licenseTypes: ['Car', 'Trailer'], image: 'https://picsum.photos/seed/1541899481282-d53bffe3c35d/600/600' },
-  { id: 's4', name: 'Kölner Fahrschule Plus', city: 'Cologne', rating: 4.9, reviews: 275, price: 40, transmission: 'Manual & Automatic', languages: ['German', 'English', 'Arabic'], availability: 'week', licenseTypes: ['Car', 'Truck', 'Bus'], image: 'https://picsum.photos/seed/1502877338535-766e1452684a/600/600' },
-  { id: 's5', name: 'Frankfurt City Driving', city: 'Frankfurt', rating: 4.6, reviews: 143, price: 35, transmission: 'Automatic', languages: ['German', 'English', 'Russian'], availability: 'month', licenseTypes: ['Car'], image: 'https://picsum.photos/seed/1493238792000-8113da705763/600/600' },
-  { id: 's6', name: 'Berlin Kreuzberg Fahrschule', city: 'Berlin', rating: 4.8, reviews: 229, price: 39, transmission: 'Manual & Automatic', languages: ['German', 'Turkish', 'English'], availability: 'week', licenseTypes: ['Car', 'Motorcycle', 'Electric'], image: 'https://picsum.photos/seed/1552519507-da3b142c6e3d/600/600' },
+  { id: 's1', name: 'Fahrschule Berlin Mitte', city: 'Berlin', rating: 4.9, reviews: 312, price: 38, transmission: 'Manual & Automatic', languages: ['German', 'English'], availability: 'week', licenseTypes: ['Car', 'Motorcycle'], image: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=85' },
+  { id: 's2', name: 'München Fahrschule Nord', city: 'Munich', rating: 4.8, reviews: 201, price: 42, transmission: 'Automatic', languages: ['German', 'English', 'Turkish'], availability: 'month', licenseTypes: ['Car', 'Electric'], image: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=1200&q=85' },
+  { id: 's3', name: 'Hamburg Drive Academy', city: 'Hamburg', rating: 4.7, reviews: 168, price: 36, transmission: 'Manual', languages: ['German', 'Polish'], availability: 'week', licenseTypes: ['Car', 'Trailer'], image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=85' },
+  { id: 's4', name: 'Kölner Fahrschule Plus', city: 'Cologne', rating: 4.9, reviews: 275, price: 40, transmission: 'Manual & Automatic', languages: ['German', 'English', 'Arabic'], availability: 'week', licenseTypes: ['Car', 'Truck', 'Bus'], image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=85' },
+  { id: 's5', name: 'Frankfurt City Driving', city: 'Frankfurt', rating: 4.6, reviews: 143, price: 35, transmission: 'Automatic', languages: ['German', 'English', 'Russian'], availability: 'month', licenseTypes: ['Car'], image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85' },
+  { id: 's6', name: 'Berlin Kreuzberg Fahrschule', city: 'Berlin', rating: 4.8, reviews: 229, price: 39, transmission: 'Manual & Automatic', languages: ['German', 'Turkish', 'English'], availability: 'week', licenseTypes: ['Car', 'Motorcycle', 'Electric'], image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1200&q=85' },
 ];
 
 const INSTRUCTOR_DEFS = [
@@ -738,12 +745,12 @@ const INSTRUCTOR_DEFS = [
 ];
 
 const TESTIMONIALS = [
-  { name: 'Sarah M.', quote: 'Booked my lesson in two minutes and passed on the first try.', stars: '★★★★★' },
-  { name: 'David K.', quote: 'My instructor spoke perfect English — huge relief as an expat.', stars: '★★★★★' },
-  { name: 'Elena R.', quote: 'The app kept me on track with reminders and progress.', stars: '★★★★★' },
-  { name: 'Yusuf A.', quote: 'Transparent pricing, no surprise fees. Loved it.', stars: '★★★★☆' },
-  { name: 'Mia T.', quote: 'Comparing schools side by side saved me so much time.', stars: '★★★★★' },
-  { name: 'Peter L.', quote: 'Best driving school experience in Germany, hands down.', stars: '★★★★★' },
+  { name: 'Sarah M.', quote: 'Booked my lesson in two minutes and passed on the first try.' },
+  { name: 'David K.', quote: 'My instructor spoke perfect English — huge relief as an expat.' },
+  { name: 'Elena R.', quote: 'The app kept me on track with reminders and progress.' },
+  { name: 'Yusuf A.', quote: 'Transparent pricing, no surprise fees. Loved it.' },
+  { name: 'Mia T.', quote: 'Comparing schools side by side saved me so much time.' },
+  { name: 'Peter L.', quote: 'Best driving school experience in Germany, hands down.' },
 ];
 
 const FAQ_DEFS = [
@@ -894,7 +901,12 @@ class Component extends DCLogic {
   setHeroImgRef = (el) => {
     if (!el) return;
     const seed = { city: 'hero-road', autobahn: 'hero-autobahn', countryside: 'hero-countryside' }[this.props.heroStyle ?? 'city'];
-    el.src = `https://picsum.photos/seed/${seed}/1920/1920`;
+    const heroImages = {
+      city: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2200&q=90',
+      autobahn: 'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=2200&q=90',
+      countryside: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=90',
+    };
+    el.src = heroImages[this.props.heroStyle ?? 'city'];
   };
 
   // Nav
@@ -968,6 +980,12 @@ class Component extends DCLogic {
     const max = this.journeyEl.scrollWidth - this.journeyEl.clientWidth;
     const pct = max > 0 ? (this.journeyEl.scrollLeft / max) * 100 : 0;
     this.setState({ journeyScrollPct: pct });
+  };
+  journeyPrevious = () => {
+    if (this.journeyEl) this.journeyEl.scrollBy({ left: -(this.journeyEl.clientWidth * 0.82), behavior: 'smooth' });
+  };
+  journeyNext = () => {
+    if (this.journeyEl) this.journeyEl.scrollBy({ left: this.journeyEl.clientWidth * 0.82, behavior: 'smooth' });
   };
 
   // Instructors
@@ -1062,7 +1080,7 @@ class Component extends DCLogic {
     }));
 
     const ratingOptions = [4.5, 4.7, 4.9].map((r) => ({
-      val: r, label: `${r}★+`,
+      val: r, label: `${r}`,
       bg: s.minRating === r ? '#2563EB' : '#F7F8FA',
       color: s.minRating === r ? '#fff' : '#374151',
     }));
@@ -1094,10 +1112,10 @@ class Component extends DCLogic {
     const partnerLogosDoubled = [...partnerLogos, ...partnerLogos];
 
     const whyFeatures = [
-      { idx: 0, revealId: 'why-0', number: '01', title: 'Verified Instructors', accentColor: '#2563EB', icon: '🎓', desc: 'Every instructor on DriveHub is certified, background-checked, and rated by real students.', bullets: ['Official BKF certification', 'Ongoing quality reviews', 'Verified student ratings'], image: 'https://picsum.photos/seed/1544005313-94ddf0286df2/520/520', seed: 'why1' },
-      { idx: 1, revealId: 'why-1', number: '02', title: 'Transparent Pricing', accentColor: '#10B981', icon: '💶', desc: 'See full lesson costs upfront — no hidden fees, no surprise add-ons at the end.', bullets: ['Per-lesson pricing shown upfront', 'No booking fees', 'Compare packages side by side'], image: 'https://picsum.photos/seed/1503736334956-4c8f8e92946d/520/520', seed: 'why2' },
-      { idx: 2, revealId: 'why-2', number: '03', title: 'Flexible Scheduling', accentColor: '#F97316', icon: '📅', desc: 'Book, reschedule, or cancel lessons in seconds — fit driving lessons around your life.', bullets: ['Reschedule free within 24h', 'Evening & weekend slots', 'Sync with your calendar'], image: 'https://picsum.photos/seed/1550355191-aa8a80b41353/520/520', seed: 'why3' },
-      { idx: 3, revealId: 'why-3', number: '04', title: 'Real Student Reviews', accentColor: '#111827', icon: '⭐', desc: 'Every review comes from a verified, completed lesson — no fake ratings, ever.', bullets: ['Verified-booking reviews only', 'Photo & video testimonials', 'Public pass-rate data'], image: 'https://picsum.photos/seed/1494905998402-395d579af36f/520/520', seed: 'why4' },
+      { idx: 0, revealId: 'why-0', number: '01', title: 'Verified Instructors', accentColor: '#2563EB', icon: 'fa-solid fa-user-shield', desc: 'Every instructor on DriveHub is certified, background-checked, and rated by real students.', bullets: ['Official BKF certification', 'Ongoing quality reviews', 'Verified student ratings'], image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1000&q=85', seed: 'why1' },
+      { idx: 1, revealId: 'why-1', number: '02', title: 'Transparent Pricing', accentColor: '#10B981', icon: 'fa-solid fa-euro-sign', desc: 'See full lesson costs upfront — no hidden fees, no surprise add-ons at the end.', bullets: ['Per-lesson pricing shown upfront', 'No booking fees', 'Compare packages side by side'], image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1000&q=85', seed: 'why2' },
+      { idx: 2, revealId: 'why-2', number: '03', title: 'Flexible Scheduling', accentColor: '#F97316', icon: 'fa-solid fa-calendar-days', desc: 'Book, reschedule, or cancel lessons in seconds — fit driving lessons around your life.', bullets: ['Reschedule free within 24h', 'Evening & weekend slots', 'Sync with your calendar'], image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1000&q=85', seed: 'why3' },
+      { idx: 3, revealId: 'why-3', number: '04', title: 'Real Student Reviews', accentColor: '#111827', icon: 'fa-solid fa-star', desc: 'Every review comes from a verified, completed lesson — no fake ratings, ever.', bullets: ['Verified-booking reviews only', 'Photo & video testimonials', 'Public pass-rate data'], image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1000&q=85', seed: 'why4' },
     ].map((f) => {
       const active = s.activeFeatureIdx === f.idx;
       return {
@@ -1117,12 +1135,12 @@ class Component extends DCLogic {
     const whyActiveIcon = whyActive ? whyActive.icon : '';
 
     const journeySteps = [
-      { num: 1, icon: '🔍', title: 'Choose School', desc: 'Compare certified schools and instructors near you.' },
-      { num: 2, icon: '🚗', title: 'Book Trial Lesson', desc: 'Try a lesson before committing to a full package.' },
-      { num: 3, icon: '📘', title: 'Theory Course', desc: 'Complete your mandatory theory classes online or in person.' },
-      { num: 4, icon: '🛣️', title: 'Practical Lessons', desc: 'Regular driving lessons tailored to your progress.' },
-      { num: 5, icon: '📝', title: 'Mock Exam', desc: 'Practice under real test conditions with feedback.' },
-      { num: 6, icon: '🎉', title: 'Get Licensed', desc: 'Pass your test and hit the road with confidence.' },
+      { num: 1, icon: 'fa-solid fa-magnifying-glass', title: 'Choose School', desc: 'Compare certified schools and instructors near you.' },
+      { num: 2, icon: 'fa-solid fa-car', title: 'Book Trial Lesson', desc: 'Try a lesson before committing to a full package.' },
+      { num: 3, icon: 'fa-solid fa-book-open', title: 'Theory Course', desc: 'Complete your mandatory theory classes online or in person.' },
+      { num: 4, icon: 'fa-solid fa-road', title: 'Practical Lessons', desc: 'Regular driving lessons tailored to your progress.' },
+      { num: 5, icon: 'fa-solid fa-clipboard-check', title: 'Mock Exam', desc: 'Practice under real test conditions with feedback.' },
+      { num: 6, icon: 'fa-solid fa-id-card', title: 'Get Licensed', desc: 'Pass your test and hit the road with confidence.' },
     ].map((step) => ({ ...step, borderStyle: '1px solid rgba(17,24,39,0.06)' }));
     const activeStep = Math.min(6, Math.max(1, Math.round((s.journeyScrollPct / 100) * 5) + 1));
 
@@ -1174,7 +1192,7 @@ class Component extends DCLogic {
     return {
       navHeight: s.scrolled ? 68 : 88,
       navPad: s.scrolled ? 12 : 16,
-      navBg: s.scrolled ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.55)',
+      navBg: '#FFFFFF',
       navShadow: s.scrolled ? '0 12px 32px rgba(17,24,39,0.1)' : '0 8px 24px rgba(17,24,39,0.06)',
       navItems,
       megaMenuOpen: s.megaMenuOpen,
@@ -1271,6 +1289,8 @@ class Component extends DCLogic {
       activeStep,
       onJourneyScroll: this.onJourneyScroll,
       setJourneyRef: this.setJourneyRef,
+      journeyPrevious: this.journeyPrevious,
+      journeyNext: this.journeyNext,
 
       instructorChips,
       instructors,
@@ -1280,12 +1300,12 @@ class Component extends DCLogic {
       setActiveInstructorImgRef: this.mkImgRef(activeInstructor ? activeInstructor.photo : ''),
       activeInstructorName: activeInstructor ? activeInstructor.name : '',
 
-      setFeaturedTestimonialImgRef: this.mkImgRef('https://picsum.photos/seed/1494905998402-395d579af36f/700/700'),
+      setFeaturedTestimonialImgRef: this.mkImgRef('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=85'),
       beforeAfter,
       reviewsDoubled,
 
-      setAppScreen1Ref: this.mkImgRef('https://picsum.photos/seed/1550355191-aa8a80b41353/220/220'),
-      setAppScreen2Ref: this.mkImgRef('https://picsum.photos/seed/1449965408869-eaa3f722e40d/220/220'),
+      setAppScreen1Ref: this.mkImgRef('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=85'),
+      setAppScreen2Ref: this.mkImgRef('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=600&q=85'),
 
       faqQuery: s.faqQuery,
       onFaqQueryChange: this.onFaqQueryChange,
@@ -1301,7 +1321,7 @@ class Component extends DCLogic {
       newsletterEmail: s.newsletterEmail,
       onNewsletterChange: this.onNewsletterChange,
       submitNewsletter: this.submitNewsletter,
-      newsletterIcon: s.newsletterSubmitted ? '✓' : '→',
+      newsletterIcon: s.newsletterSubmitted ? 'fa-solid fa-check' : 'fa-solid fa-arrow-right',
       newsletterMsg: s.newsletterSubmitted ? 'Thanks — check your inbox to confirm.' : 'Tips, offers, and license news. No spam.',
 
       hoverCity: this.hoverCity,
